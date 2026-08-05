@@ -48,7 +48,7 @@ export function DesktopNavigation() {
     <header className="hidden border-b border-border-default bg-background-primary md:block">
       <div className="mx-auto flex h-20 max-w-8xl items-center justify-between px-6 lg:px-8">
         <Link href="/" aria-label="Kryptompeg — Nossa jornada">
-          <Image src="/logo.svg" alt="Kryptompeg" width={120} height={48} priority />
+          <Image src="/logo.svg" alt="Kryptompeg" width={124} height={36} priority />
         </Link>
 
         <nav
