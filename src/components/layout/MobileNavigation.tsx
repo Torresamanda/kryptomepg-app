@@ -35,7 +35,7 @@ export function MobileNavigation({ onAddExperience }: MobileNavigationProps) {
         <button
           type="button"
           onClick={onAddExperience}
-          className="-mt-8 flex flex-col items-center gap-1 text-sm font-medium text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-border-focus"
+          className="cursor-pointer -mt-8 flex flex-col items-center gap-1 text-sm font-medium text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-border-focus"
         >
           <span className="flex size-14 items-center justify-center rounded-full border-2 border-border-default bg-brand-gold-500 text-background-primary shadow-lg transition-transform duration-200 hover:-translate-y-0.5">
             <PlusIcon size={28} weight="bold" />

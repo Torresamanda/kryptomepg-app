@@ -1,18 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { NewExperienceDrawer } from '@/features/experiencias/components/NewExperienceDrawer'
+import { useQueryDrawer } from '@/hooks/useQueryDrawer/useQueryDrawer'
 import { DesktopNavigation } from './DesktopNavigation'
 import { MobileNavigation } from './MobileNavigation'
-import { NewExperienceDrawer } from './NewExperienceDrawer'
 
 export function AppNavigation() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const newExperienceDrawer = useQueryDrawer('new-experience')
 
   return (
     <>
       <DesktopNavigation />
-      <MobileNavigation onAddExperience={() => setIsDrawerOpen(true)} />
-      <NewExperienceDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <MobileNavigation onAddExperience={newExperienceDrawer.open} />
+      <NewExperienceDrawer open={newExperienceDrawer.isOpen} onClose={newExperienceDrawer.close} />
     </>
   )
 }

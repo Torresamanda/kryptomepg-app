@@ -17,4 +17,5 @@ export {
   TrophyIcon,
   MagnifyingGlassIcon,
   FadersIcon,
+  XIcon,
 } from '@phosphor-icons/react'
