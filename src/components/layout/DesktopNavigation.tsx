@@ -4,7 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { FemaleAvatarIcon } from '@/assets/icons'
+import { UserAvatar } from '@/components/ui/UserAvatar'
+import { useNavigationLoading } from '@/context/NavigationLoadingContext/NavigationLoadingContext'
+import type { CurrentUser } from '@/features/auth/types/CurrentUser'
 import { isActiveRoute, navigationItems } from './navigationItems'
 
 interface ActiveIndicator {
@@ -12,8 +14,13 @@ interface ActiveIndicator {
   width: number
 }
 
-export function DesktopNavigation() {
+interface DesktopNavigationProps {
+  user: CurrentUser
+}
+
+export function DesktopNavigation({ user }: DesktopNavigationProps) {
   const pathname = usePathname()
+  const { startNavigation } = useNavigationLoading()
   const navigationRef = useRef<HTMLElement>(null)
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
   const [indicator, setIndicator] = useState<ActiveIndicator | null>(null)
@@ -47,7 +54,7 @@ export function DesktopNavigation() {
   return (
     <header className="hidden border-b border-border-default bg-background-primary md:block">
       <div className="mx-auto flex h-20 max-w-8xl items-center justify-between px-6 lg:px-8">
-        <Link href="/" aria-label="Kryptompeg — Nossa jornada">
+        <Link href="/" aria-label="Kryptompeg — Nossa jornada" onClick={() => startNavigation('/')}>
           <Image src="/logo.svg" alt="Kryptompeg" width={124} height={36} priority />
         </Link>
 
@@ -63,6 +70,7 @@ export function DesktopNavigation() {
                   linkRefs.current[item.href] = element
                 }}
                 href={item.href}
+                onClick={() => startNavigation(item.href)}
                 aria-current={isActiveRoute(pathname, item.href) ? 'page' : undefined}
                 className="pb-2 font-memory text-1xl leading-none uppercase text-text-primary transition-colors hover:text-brand-gold-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-border-focus"
               >
@@ -82,9 +90,14 @@ export function DesktopNavigation() {
           )}
         </nav>
 
-        <div className="flex size-10 items-center justify-center rounded-full border border-brand-gold-500 bg-surface-elevated">
-          <FemaleAvatarIcon size="sm" />
-        </div>
+        <Link
+          href="/perfil"
+          aria-label={`Ver perfil de ${user.name}`}
+          onClick={() => startNavigation('/perfil')}
+          className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-border-focus"
+        >
+          <UserAvatar variant={user.avatarVariant} size="sm" />
+        </Link>
       </div>
     </header>
   )

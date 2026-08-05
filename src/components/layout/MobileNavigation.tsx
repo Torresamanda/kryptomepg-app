@@ -1,16 +1,22 @@
 'use client'
 
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpenIcon, ClockIcon, FemaleAvatarIcon, HeartIcon, PlusIcon } from '@/assets/icons'
+import { BookOpenIcon, ClockIcon, HeartIcon, PlusIcon } from '@/assets/icons'
+import { UserAvatar } from '@/components/ui/UserAvatar'
+import { useNavigationLoading } from '@/context/NavigationLoadingContext/NavigationLoadingContext'
+import type { CurrentUser } from '@/features/auth/types/CurrentUser'
 import { isActiveRoute } from './navigationItems'
 import { MobileNavigationLink } from './MobileNavigationLink'
 
 interface MobileNavigationProps {
   onAddExperience: () => void
+  user: CurrentUser
 }
 
-export function MobileNavigation({ onAddExperience }: MobileNavigationProps) {
+export function MobileNavigation({ onAddExperience, user }: MobileNavigationProps) {
   const pathname = usePathname()
+  const { startNavigation } = useNavigationLoading()
 
   return (
     <nav
@@ -22,6 +28,7 @@ export function MobileNavigation({ onAddExperience }: MobileNavigationProps) {
           href="/nossa-jornada"
           label="Jornada"
           active={isActiveRoute(pathname, '/nossa-jornada')}
+          onNavigate={startNavigation}
         >
           <HeartIcon weight="fill" />
         </MobileNavigationLink>
@@ -29,6 +36,7 @@ export function MobileNavigation({ onAddExperience }: MobileNavigationProps) {
           href="/biblioteca"
           label="Biblioteca"
           active={isActiveRoute(pathname, '/biblioteca')}
+          onNavigate={startNavigation}
         >
           <BookOpenIcon />
         </MobileNavigationLink>
@@ -46,16 +54,19 @@ export function MobileNavigation({ onAddExperience }: MobileNavigationProps) {
           href="/linha-do-tempo"
           label="Linha do tempo"
           active={isActiveRoute(pathname, '/linha-do-tempo')}
+          onNavigate={startNavigation}
         >
           <ClockIcon />
         </MobileNavigationLink>
-
-        <div className="flex flex-col items-center gap-1 text-xs font-medium text-text-secondary">
-          <span className="flex size-9 items-center justify-center rounded-full border border-border-default bg-surface-elevated">
-            <FemaleAvatarIcon size="xs" variant="secondary" />
-          </span>
+        <Link
+          href="/perfil"
+          aria-label={`Ver perfil de ${user.name}`}
+          onClick={() => startNavigation('/perfil')}
+          className="flex flex-col items-center gap-1 rounded-md text-xs font-medium text-text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+        >
+          <UserAvatar variant={user.avatarVariant} size="sm" />
           Perfil
-        </div>
+        </Link>
       </div>
     </nav>
   )

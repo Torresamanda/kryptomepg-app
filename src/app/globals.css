@@ -68,6 +68,20 @@
   --color-experience-memory: #ff8aab;
 }
 
+@theme {
+  --animate-loading-progress: loading-progress 1.5s ease-in-out infinite;
+
+  @keyframes loading-progress {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(400%);
+    }
+  }
+}
+
 * {
   box-sizing: border-box;
 }

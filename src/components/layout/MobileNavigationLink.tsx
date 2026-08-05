@@ -6,12 +6,20 @@ interface MobileNavigationLinkProps {
   label: string
   active: boolean
   children: ReactNode
+  onNavigate: (href: string) => void
 }
 
-export function MobileNavigationLink({ href, label, active, children }: MobileNavigationLinkProps) {
+export function MobileNavigationLink({
+  href,
+  label,
+  active,
+  children,
+  onNavigate,
+}: MobileNavigationLinkProps) {
   return (
     <Link
       href={href}
+      onClick={() => onNavigate(href)}
       aria-current={active ? 'page' : undefined}
       className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-center text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus ${
         active
