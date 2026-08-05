@@ -1,20 +1,20 @@
-export { default as FemaleAvatarIcon } from './FemaleAvatarIcon.vue'
-export { default as MaleAvatarIcon } from './MaleAvatarIcon.vue'
+export { FemaleAvatarIcon } from './FemaleAvatarIcon'
+export { MaleAvatarIcon } from './MaleAvatarIcon'
 
 export {
-  PhHeart as HeartIcon,
-  PhPlus as PlusIcon,
-  PhUser as UserIcon,
-  PhUsers as UsersIcon,
-  PhArrowRight as ArrowRightIcon,
-  PhArrowsVertical as ArrowsVerticalIcon,
-  PhBookOpen as BookOpenIcon,
-  PhClock as ClockIcon,
-  PhCaretLeft as CaretLeftIcon,
-  PhCaretRight as CaretRightIcon,
-  PhStar as StarIcon,
-  PhGameController as GameControllerIcon,
-  PhTrophy as TrophyIcon,
-  PhMagnifyingGlass as MagnifyingGlassIcon,
-  PhFaders as FadersIcon,
-} from '@phosphor-icons/vue'
+  HeartIcon,
+  PlusIcon,
+  UserIcon,
+  UsersIcon,
+  ArrowRightIcon,
+  ArrowsVerticalIcon,
+  BookOpenIcon,
+  ClockIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+  StarIcon,
+  GameControllerIcon,
+  TrophyIcon,
+  MagnifyingGlassIcon,
+  FadersIcon,
+} from '@phosphor-icons/react'
