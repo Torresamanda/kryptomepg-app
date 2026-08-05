@@ -9,7 +9,7 @@ const mockRequestDelayMs = 800
  *
  * The mock will be replaced by the Firebase-backed implementation without changing consumers.
  */
-export const getCurrentUser = cache(async (): Promise<CurrentUser> => {
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   await new Promise((resolve) => setTimeout(resolve, mockRequestDelayMs))
 
   return currentUserMock

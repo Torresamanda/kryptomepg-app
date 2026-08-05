@@ -1,4 +1,5 @@
 export { FemaleAvatarIcon } from './FemaleAvatarIcon'
+export { BrokenCassetteIcon } from './BrokenCassetteIcon'
 export { LoadingCassetteIcon } from './LoadingCassetteIcon'
 export { MaleAvatarIcon } from './MaleAvatarIcon'
 

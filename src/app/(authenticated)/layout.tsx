@@ -3,6 +3,7 @@ import { AppNavigation } from '@/components/layout/AppNavigation'
 import { PlatformLoader } from '@/components/ui/PlatformLoader'
 import { DrawerStackProvider } from '@/context/DrawerStackContext/DrawerStackContext'
 import { NavigationLoadingProvider } from '@/context/NavigationLoadingContext/NavigationLoadingContext'
+import { NotAuthenticatedState } from '@/features/auth/components/NotAuthenticatedState'
 import { getCurrentUser } from '@/features/auth/services/getCurrentUser'
 
 interface AuthenticatedLayoutProps {
@@ -19,6 +20,8 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
 
 async function AuthenticatedContent({ children }: AuthenticatedLayoutProps) {
   const user = await getCurrentUser()
+
+  if (!user) return <NotAuthenticatedState />
 
   return (
     <NavigationLoadingProvider>

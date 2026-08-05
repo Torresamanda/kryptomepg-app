@@ -5,6 +5,8 @@ import { ProfileSummary } from '@/features/profile/components/ProfileSummary'
 export default async function ProfilePage() {
   const user = await getCurrentUser()
 
+  if (!user) return null
+
   return (
     <PageContainer>
       <ProfileSummary user={user} />
