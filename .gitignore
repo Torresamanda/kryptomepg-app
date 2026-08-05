@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local project working agreement (not versioned)
-PROJECT_RULES.local.md
+# Local project documentation (not versioned)
+/docs/

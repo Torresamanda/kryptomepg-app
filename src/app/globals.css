@@ -39,13 +39,16 @@
   /* Backgrounds, surfaces, text, and borders */
   --color-background-primary: #090c16;
   --color-background-secondary: #121521;
+
   --color-surface-default: #171827;
   --color-surface-elevated: #202333;
   --color-surface-hover: #292d42;
+
   --color-text-primary: #f5f4fa;
   --color-text-secondary: #b8b7c8;
   --color-text-muted: #8c8ba1;
   --color-text-disabled: #626175;
+
   --color-border-default: #35374a;
   --color-border-active: #f3c94a;
   --color-border-focus: #36c5ff;
