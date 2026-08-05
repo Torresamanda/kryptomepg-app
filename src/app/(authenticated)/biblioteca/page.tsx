@@ -1,3 +1,5 @@
+import { PageContainer } from '@/components/layout/PageContainer'
+
 export default function BibliotecaPage() {
-  return <div>Biblioteca</div>
+  return <PageContainer>Biblioteca</PageContainer>
 }
