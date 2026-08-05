@@ -1,3 +1,5 @@
+import { PageContainer } from '@/components/layout/PageContainer'
+
 export default function NossaJornadaPage() {
-  return <div>Nossa Jornada</div>
+  return <PageContainer>Nossa Jornada</PageContainer>
 }
