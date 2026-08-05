@@ -1,26 +1,82 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* All typefaces used */
+  --font-sans: var(--font-inter);
+  --font-memory: var(--font-pixelify);
+
+  /* Brand colores */
+  --color-brand-gold-900: #342103;
+  --color-brand-gold-800: #a53907;
+  --color-brand-gold-700: #8a5a0b;
+  --color-brand-gold-600: #c88a12;
+  --color-brand-gold-500: #f3c94a;
+  --color-brand-gold-400: #ffd96a;
+  --color-brand-gold-300: #ffe793;
+  --color-brand-gold-200: #fff1be;
+  --color-brand-gold-100: #fff9e4;
+
+  --color-brand-purple-900: #2b0937;
+  --color-brand-purple-800: #49105e;
+  --color-brand-purple-700: #6e1787;
+  --color-brand-purple-600: #a62bd3;
+  --color-brand-purple-500: #e04fd0;
+  --color-brand-purple-400: #f274e2;
+  --color-brand-purple-300: #f7a4ed;
+  --color-brand-purple-200: #fcd4f8;
+  --color-brand-purple-100: #fef0fd;
+
+  --color-accent-blue-900: #04263a;
+  --color-accent-blue-800: #064a72;
+  --color-accent-blue-700: #0876b6;
+  --color-accent-blue-600: #13a8f5;
+  --color-accent-blue-500: #36c5ff;
+  --color-accent-blue-400: #6fd9ff;
+  --color-accent-blue-300: #9defff;
+  --color-accent-blue-200: #ccf5ff;
+  --color-accent-blue-100: #edfffe;
+
+  /* Backgrounds, surfaces, text, and borders */
+  --color-background-primary: #090c16;
+  --color-background-secondary: #121521;
+  --color-surface-default: #171827;
+  --color-surface-elevated: #202333;
+  --color-surface-hover: #292d42;
+  --color-text-primary: #f5f4fa;
+  --color-text-secondary: #b8b7c8;
+  --color-text-muted: #8c8ba1;
+  --color-text-disabled: #626175;
+  --color-border-default: #35374a;
+  --color-border-active: #f3c94a;
+  --color-border-focus: #36c5ff;
+
+  /* Semantic states */
+  --color-success: #2ecc71;
+  --color-warning: #f7b731;
+  --color-error: #ff5c7a;
+  --color-info: #3db7ff;
+
+  /* States of experience */
+  --color-experience-playing: #d88a1d;
+  --color-experience-reading: #63d2ff;
+  --color-experience-finished: #2ecc71;
+  --color-experience-favorite: #ffd84a;
+  --color-experience-shared: #f08eff;
+  --color-experience-memory: #ff8aab;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-background-primary);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-inter), Arial, sans-serif;
 }
