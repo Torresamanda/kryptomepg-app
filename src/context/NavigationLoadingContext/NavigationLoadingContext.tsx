@@ -1,6 +1,6 @@
 'use client'
 
-import type { MutableRefObject, ReactNode } from 'react'
+import type { RefObject, ReactNode } from 'react'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { NavigationLoadingOverlay } from '@/components/ui/NavigationLoadingOverlay'
@@ -18,7 +18,7 @@ interface NavigationLoadingProviderProps {
   children: ReactNode
 }
 
-function clearTimer(timerRef: MutableRefObject<ReturnType<typeof setTimeout> | null>) {
+function clearTimer(timerRef: RefObject<ReturnType<typeof setTimeout> | null>) {
   if (!timerRef.current) return
   clearTimeout(timerRef.current)
   timerRef.current = null
