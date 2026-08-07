@@ -31,11 +31,14 @@ function clearTimer(timerRef: MutableRefObject<ReturnType<typeof setTimeout> | n
  */
 export function NavigationLoadingProvider({ children }: NavigationLoadingProviderProps) {
   const pathname = usePathname()
+
   const [isVisible, setIsVisible] = useState(false)
+
   const targetRef = useRef<string | null>(null)
   const delayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const visibleSinceRef = useRef<number | null>(null)
+
   const isVisibleRef = useRef(false)
 
   const hideOverlay = useCallback(() => {
