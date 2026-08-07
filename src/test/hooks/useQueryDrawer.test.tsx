@@ -34,6 +34,14 @@ describe('useQueryDrawer', () => {
     expect(result.current.isOpen).toBe(true)
   })
 
+  it('is closed when its query parameter is not true', () => {
+    mockUseSearchParams.mockReturnValue(new URLSearchParams('new-experience=false'))
+
+    const { result } = renderHook(() => useQueryDrawer('new-experience'))
+
+    expect(result.current.isOpen).toBe(false)
+  })
+
   it('adds its query parameter while preserving existing parameters', () => {
     mockUseSearchParams.mockReturnValue(new URLSearchParams('filters=true'))
 

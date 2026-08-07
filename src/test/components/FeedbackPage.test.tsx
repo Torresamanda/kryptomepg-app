@@ -30,4 +30,18 @@ describe('FeedbackPage', () => {
 
     expect(screen.getByRole('button', { name: 'Ir para login' })).toBeVisible()
   })
+
+  it('does not render the error identifier when it is not received', () => {
+    render(
+      <FeedbackPage
+        code="404"
+        title="Página não encontrada"
+        description="Esta fita não existe na coleção."
+      >
+        <a href="/nossa-jornada">Voltar para Nossa Jornada</a>
+      </FeedbackPage>,
+    )
+
+    expect(screen.queryByText(/Error ID:/)).not.toBeInTheDocument()
+  })
 })
