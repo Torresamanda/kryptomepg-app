@@ -1,6 +1,6 @@
 import { Drawer } from '@/components/ui/Drawer'
 import { DrawerStackProvider } from '@/context/DrawerStackContext/DrawerStackContext'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -58,6 +58,41 @@ describe('Drawer', () => {
     await user.click(closeButton)
 
     expect(handleClose).toHaveBeenCalledOnce()
+  })
+
+  it('moves focus to the close button when opened', async () => {
+    render(
+      <DrawerStackProvider>
+        <Drawer open={true} onClose={vi.fn()} title={'Adicionar Experiências'}>
+          Conteúdo do Painel
+        </Drawer>
+      </DrawerStackProvider>,
+    )
+
+    const closeButton = screen.getByRole('button', { name: 'Fechar painel' })
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(closeButton)
+    })
+  })
+
+  it('locks background scroll while open and restores it when unmounted', async () => {
+    const initialOverflow = document.body.style.overflow
+    const { unmount } = render(
+      <DrawerStackProvider>
+        <Drawer open={true} onClose={vi.fn()} title={'Adicionar Experiências'}>
+          Conteúdo do Painel
+        </Drawer>
+      </DrawerStackProvider>,
+    )
+
+    await waitFor(() => {
+      expect(document.body.style.overflow).toBe('hidden')
+    })
+
+    unmount()
+
+    expect(document.body.style.overflow).toBe(initialOverflow)
   })
 
   it('calls onClose when the drawer is closed via the dark overlay', async () => {
