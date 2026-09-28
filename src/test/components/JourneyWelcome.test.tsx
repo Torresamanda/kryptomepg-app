@@ -41,4 +41,13 @@ describe('JourneyWelcome', () => {
 
     expect(mockOpen).toHaveBeenCalledOnce()
   })
+
+  it('hides the desktop action on mobile screens', () => {
+    render(<JourneyWelcome userName="Amanda e Bryan" />)
+
+    expect(screen.getByRole('button', { name: 'Nova experiência' }).parentElement).toHaveClass(
+      'hidden',
+      'md:block',
+    )
+  })
 })

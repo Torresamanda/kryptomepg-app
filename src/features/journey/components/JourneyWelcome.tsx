@@ -28,10 +28,12 @@ export function JourneyWelcome({ userName }: JourneyWelcomeProps) {
         {`${greeting}, ${userName}`}
       </h1>
 
-      <Button className="hidden shrink-0 gap-2 md:inline-flex" onClick={newExperienceDrawer.open}>
-        <PlusIcon size={20} weight="bold" aria-hidden="true" />
-        Nova experiência
-      </Button>
+      <div className="hidden shrink-0 md:block">
+        <Button className="gap-2" onClick={newExperienceDrawer.open}>
+          <PlusIcon size={20} weight="bold" aria-hidden="true" />
+          Nova experiência
+        </Button>
+      </div>
     </section>
   )
 }
