@@ -4,7 +4,7 @@
 
 `useQueryDrawer` synchronizes a drawer's open state with a boolean query parameter in the current URL.
 
-## API
+## Public API
 
 ```ts
 useQueryDrawer(parameterName: string)
@@ -28,6 +28,8 @@ const newExperienceDrawer = useQueryDrawer('new-experience')
 ## Behavior
 
 - `open()` uses navigation history, so the browser back button can close the drawer.
+- URL updates use the browser History API, avoiding a server route navigation when opening or closing a drawer.
+- Drawers react immediately to their own URL updates and to browser history changes.
 - Existing query parameters are preserved when a drawer opens or closes.
 - Multiple drawers can use separate parameters, such as `new-experience` or `filters`.
 - Reloading a URL with `<parameterName>=true` keeps the drawer open.

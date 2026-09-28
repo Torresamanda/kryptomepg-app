@@ -1,7 +1,9 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useCallback, useSyncExternalStore } from 'react'
+
+const drawerHistoryChangeEvent = 'kryptompeg:drawer-history-change'
 
 function createUrl(pathname: string, params: URLSearchParams) {
   const query = params.toString()
@@ -20,25 +22,49 @@ function createUrl(pathname: string, params: URLSearchParams) {
  * `close` functions used to update that state.
  */
 export function useQueryDrawer(parameterName: string) {
-  const pathname = usePathname()
-  const router = useRouter()
   const searchParams = useSearchParams()
 
-  const isOpen = searchParams.get(parameterName) === 'true'
+  const subscribe = useCallback((onStoreChange: () => void) => {
+    window.addEventListener('popstate', onStoreChange)
+    window.addEventListener(drawerHistoryChangeEvent, onStoreChange)
+
+    return () => {
+      window.removeEventListener('popstate', onStoreChange)
+      window.removeEventListener(drawerHistoryChangeEvent, onStoreChange)
+    }
+  }, [])
+
+  const getSnapshot = useCallback(
+    () => new URLSearchParams(window.location.search).get(parameterName) === 'true',
+    [parameterName],
+  )
+
+  const getServerSnapshot = useCallback(
+    () => searchParams.get(parameterName) === 'true',
+    [parameterName, searchParams],
+  )
+
+  const isOpen = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   const open = useCallback(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(window.location.search)
 
     params.set(parameterName, 'true')
-    router.push(createUrl(pathname, params), { scroll: false })
-  }, [parameterName, pathname, router, searchParams])
+    window.history.pushState(window.history.state, '', createUrl(window.location.pathname, params))
+    window.dispatchEvent(new Event(drawerHistoryChangeEvent))
+  }, [parameterName])
 
   const close = useCallback(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(window.location.search)
 
     params.delete(parameterName)
-    router.replace(createUrl(pathname, params), { scroll: false })
-  }, [parameterName, pathname, router, searchParams])
+    window.history.replaceState(
+      window.history.state,
+      '',
+      createUrl(window.location.pathname, params),
+    )
+    window.dispatchEvent(new Event(drawerHistoryChangeEvent))
+  }, [parameterName])
 
   return { isOpen, open, close }
 }
