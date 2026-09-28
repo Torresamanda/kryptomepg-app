@@ -59,4 +59,24 @@ describe('Button', () => {
 
     expect(handleSubmit).not.toHaveBeenCalled()
   })
+
+  it('submits a form when its type is submit', async () => {
+    const user = userEvent.setup()
+    const handleSubmit = vi.fn()
+
+    render(
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          handleSubmit()
+        }}
+      >
+        <Button type="submit">Salvar</Button>
+      </form>,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Salvar' }))
+
+    expect(handleSubmit).toHaveBeenCalledOnce()
+  })
 })
