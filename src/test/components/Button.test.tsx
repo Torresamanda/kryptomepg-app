@@ -8,6 +8,7 @@ describe('Button', () => {
     render(<Button>Salvar</Button>)
 
     expect(screen.getByRole('button', { name: 'Salvar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Salvar' })).toHaveClass('rounded-sm')
   })
 
   it('calls the click handler when clicked', async () => {

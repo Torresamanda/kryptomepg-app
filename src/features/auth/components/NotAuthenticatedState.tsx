@@ -10,7 +10,7 @@ export function NotAuthenticatedState() {
     >
       <Link
         href="/"
-        className="inline-flex min-h-10 items-center justify-center rounded-md bg-brand-gold-500 px-4 py-2 text-sm font-medium text-background-primary transition-colors hover:bg-brand-gold-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+        className="inline-flex min-h-10 items-center justify-center rounded-sm bg-brand-gold-500 px-4 py-2 text-sm font-medium text-background-primary transition-colors hover:bg-brand-gold-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
       >
         Ir para login
       </Link>

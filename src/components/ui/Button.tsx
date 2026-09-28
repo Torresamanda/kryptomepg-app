@@ -15,8 +15,8 @@ const variantClasses: Record<ButtonVariant, string> = {
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-  default: 'min-h-10 rounded-md px-4 py-2 text-sm font-medium',
-  icon: 'size-10 rounded-md',
+  default: 'min-h-10 rounded-sm px-4 py-2 text-sm font-medium',
+  icon: 'size-10 rounded-sm',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(

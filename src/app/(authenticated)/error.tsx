@@ -26,7 +26,7 @@ export default function AuthenticatedError({ error, reset }: AuthenticatedErrorP
       <Button onClick={reset}>Tentar novamente</Button>
       <Link
         href="/nossa-jornada"
-        className="inline-flex min-h-10 items-center justify-center rounded-md border border-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-gold-500 transition-colors hover:bg-brand-gold-500 hover:text-background-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+        className="inline-flex min-h-10 items-center justify-center rounded-sm border border-brand-gold-500 px-4 py-2 text-sm font-medium text-brand-gold-500 transition-colors hover:bg-brand-gold-500 hover:text-background-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
       >
         Voltar para Nossa Jornada
       </Link>

@@ -41,7 +41,7 @@ export default function LoginPage() {
         className="pointer-events-none absolute bottom-[20%] left-[23%] hidden size-9 -rotate-12 text-brand-gold-600 opacity-25 md:block"
         weight="duotone"
       />
-      <div className="relative w-full max-w-md rounded-xl border border-border-default bg-surface-elevated p-6 shadow-2xl shadow-background-primary/40 sm:p-8">
+      <div className="relative w-full max-w-md rounded-lg border border-border-default bg-surface-elevated p-6 shadow-2xl shadow-background-primary/40 sm:p-8">
         <div className="mb-8 flex items-center justify-between gap-4">
           <div>
             <p className="font-memory text-sm text-brand-gold-500">Kryptompeg</p>
