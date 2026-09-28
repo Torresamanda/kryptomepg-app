@@ -22,6 +22,12 @@ describe('Button', () => {
     expect(handleClick).toHaveBeenCalledOnce()
   })
 
+  it('supports the reusable outline variant', () => {
+    render(<Button variant="outline">Relembrar</Button>)
+
+    expect(screen.getByRole('button', { name: 'Relembrar' })).toHaveClass('border-brand-purple-500')
+  })
+
   it('does not call the click handler when disabled', async () => {
     const user = userEvent.setup()
     const handleClick = vi.fn()

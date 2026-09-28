@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef } from 'react'
 import { forwardRef } from 'react'
 
-type ButtonVariant = 'primary' | 'ghost'
+type ButtonVariant = 'primary' | 'ghost' | 'outline'
 type ButtonSize = 'default' | 'icon'
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
@@ -12,6 +12,8 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
 const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-brand-gold-500 text-background-primary hover:bg-brand-gold-400',
   ghost: 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+  outline:
+    'border border-brand-purple-500 text-brand-purple-300 hover:bg-brand-purple-900 hover:text-brand-purple-100',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
