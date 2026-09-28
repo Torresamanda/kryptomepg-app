@@ -39,4 +39,24 @@ describe('Button', () => {
 
     expect(handleClick).not.toHaveBeenCalledOnce()
   })
+
+  it('does not submit a form by default', async () => {
+    const user = userEvent.setup()
+    const handleSubmit = vi.fn()
+
+    render(
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          handleSubmit()
+        }}
+      >
+        <Button>Salvar</Button>
+      </form>,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Salvar' }))
+
+    expect(handleSubmit).not.toHaveBeenCalled()
+  })
 })
