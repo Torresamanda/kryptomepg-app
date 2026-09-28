@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 type PageContainerProps = ComponentPropsWithoutRef<'div'>
 
 export function PageContainer({ children, className, ...props }: PageContainerProps) {
-  const classes = ['mx-auto w-full max-w-8xl px-6 py-8 lg:px-8 lg:py-10', className]
+  const classes = ['mx-auto w-full max-w-6xl px-6 py-8 lg:px-8 lg:py-10', className]
     .filter(Boolean)
     .join(' ')
 

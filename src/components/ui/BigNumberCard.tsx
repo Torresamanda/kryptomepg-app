@@ -13,7 +13,10 @@ export function BigNumberCard({
   valueClassName,
   ...props
 }: BigNumberCardProps) {
-  const cardClasses = ['rounded-lg border border-border-default bg-surface-default p-4', className]
+  const cardClasses = [
+    'flex flex-col justify-center rounded-lg border border-border-default bg-surface-default p-4',
+    className,
+  ]
     .filter(Boolean)
     .join(' ')
   const valueClasses = [

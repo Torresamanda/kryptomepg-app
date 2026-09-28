@@ -53,7 +53,7 @@ export function DesktopNavigation({ user }: DesktopNavigationProps) {
 
   return (
     <header className="hidden border-b border-border-default bg-background-primary md:block">
-      <div className="mx-auto flex h-20 max-w-8xl items-center justify-between px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-6">
         <Link href="/" aria-label="Kryptompeg — Nossa jornada" onClick={() => startNavigation('/')}>
           <Image src="/logo.svg" alt="Kryptompeg" width={124} height={36} priority />
         </Link>
