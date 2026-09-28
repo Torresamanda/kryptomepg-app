@@ -1,5 +1,6 @@
 import { PageContainer } from '@/components/layout/PageContainer'
 import { MemorySection } from '@/features/memories/components/MemorySection'
+import { GoalsSection } from '@/features/goals/components/GoalsSection'
 import { MonthlyActivityCard } from '@/features/journey/components/MonthlyActivityCard'
 import { JourneyWelcome } from '@/features/journey/components/JourneyWelcome'
 import { JourneyHighlights } from '@/features/journey/components/JourneyHighlights'
@@ -7,6 +8,7 @@ import { getCurrentUser } from '@/features/auth/services/getCurrentUser'
 import { getJourneyHighlights } from '@/features/journey/services/getJourneyHighlights'
 import { getMonthlyActivity } from '@/features/journey/services/getMonthlyActivity'
 import { getRandomMemory } from '@/features/memories/services/getRandomMemory'
+import { getRecentGoals } from '@/features/goals/services/getRecentGoals'
 
 function getCurrentMonth() {
   const date = new Date()
@@ -14,11 +16,12 @@ function getCurrentMonth() {
 }
 
 export default async function NossaJornadaPage() {
-  const [user, highlights, monthlyActivity, memory] = await Promise.all([
+  const [user, highlights, monthlyActivity, memory, goals] = await Promise.all([
     getCurrentUser(),
     getJourneyHighlights(),
     getMonthlyActivity(getCurrentMonth()),
     getRandomMemory(),
+    getRecentGoals(),
   ])
 
   if (!user) return null
@@ -35,6 +38,7 @@ export default async function NossaJornadaPage() {
         </div>
       </div>
       <MemorySection initialMemory={memory} />
+      <GoalsSection initialGoals={goals} />
     </PageContainer>
   )
 }
