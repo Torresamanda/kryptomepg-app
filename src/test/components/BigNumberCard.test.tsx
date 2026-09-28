@@ -9,6 +9,8 @@ describe('BigNumberCard', () => {
     expect(screen.getByText('138')).toBeInTheDocument()
     expect(screen.getByText('Jogos registrados')).toBeInTheDocument()
     expect(screen.getByText('138')).toHaveClass('font-sans')
+    expect(screen.getByText('138')).toHaveClass('group-hover:text-accent-blue-700')
+    expect(screen.getByText('138').parentElement).toHaveClass('hover:bg-surface-elevated')
   })
 
   it('accepts classes for adapting the value appearance', () => {

@@ -29,5 +29,6 @@ describe('MonthlyActivityCard', () => {
     expect(screen.getByText('registros no mês')).toBeInTheDocument()
     expect(screen.getByLabelText('Início do mês, QUI: 3 registros')).toBeInTheDocument()
     expect(screen.getAllByRole('listitem')).toHaveLength(21)
+    expect(screen.getByLabelText('Início do mês, QUI: 3 registros')).toHaveClass('hover:scale-105')
   })
 })

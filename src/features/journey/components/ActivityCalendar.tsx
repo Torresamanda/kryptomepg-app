@@ -50,7 +50,7 @@ export function ActivityCalendar({ dailyRecords, month }: ActivityCalendarProps)
             return (
               <li
                 key={`${period}-${weekday}`}
-                className={`aspect-square w-full rounded-lg ${getIntensityClass(count)}`}
+                className={`aspect-square w-full rounded-lg transition-[filter,transform] duration-200 hover:scale-105 hover:brightness-110 ${getIntensityClass(count)}`}
                 aria-label={`${period}, ${weekday}: ${count} ${count === 1 ? 'registro' : 'registros'}`}
               />
             )
