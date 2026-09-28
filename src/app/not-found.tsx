@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/features/auth/services/getCurrentUser'
 
 export default async function NotFound() {
   const user = await getCurrentUser()
-  const destination = user ? '/nossa-jornada' : '/login'
+  const destination = user ? '/nossa-jornada' : '/'
   const label = user ? 'Voltar para Nossa Jornada' : 'Ir para login'
 
   return (
