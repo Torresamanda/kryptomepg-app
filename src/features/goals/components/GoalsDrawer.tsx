@@ -1,5 +1,7 @@
 'use client'
+
 import { Drawer } from '@/components/ui/Drawer'
+
 export function GoalsDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Drawer

@@ -30,6 +30,7 @@ export function MemorySection({ initialMemory }: MemorySectionProps) {
     return (
       <section className="rounded-lg border border-border-default bg-background-secondary p-5 sm:p-7">
         <h2 className="text-2xl font-semibold text-text-primary">Lembranças</h2>
+
         <p className="mt-2 text-sm text-text-secondary">
           Quando vocês concluírem uma experiência, ela poderá aparecer aqui.
         </p>

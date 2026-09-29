@@ -11,6 +11,7 @@ export async function getRandomMemory(excludeExperienceId?: string): Promise<Ran
   const availableMemories = randomMemoriesMock.filter(
     (memory) => memory.experienceId !== excludeExperienceId,
   )
+
   const candidates = availableMemories.length > 0 ? availableMemories : randomMemoriesMock
 
   if (candidates.length === 0) return null

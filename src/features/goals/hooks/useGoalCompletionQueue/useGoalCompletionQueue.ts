@@ -2,47 +2,56 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { completeGoals } from '../../services/completeGoals'
-import type { Goal } from '../../types/Goal'
+import type { Goal, GoalCompletionUpdate } from '../../types/Goal'
 
 const debounceMs = 500
 
 export function useGoalCompletionQueue(initialGoals: Goal[]) {
   const [goals, setGoals] = useState(initialGoals)
   const [error, setError] = useState<string | null>(null)
-  const queuedIdsRef = useRef(new Set<string>())
+  const queuedUpdatesRef = useRef(new Map<string, boolean>())
+  const previousGoalsRef = useRef(new Map<string, Goal>())
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const flush = useCallback(async () => {
-    const goalIds = [...queuedIdsRef.current]
-    queuedIdsRef.current.clear()
-    if (goalIds.length === 0) return
+    const updates: GoalCompletionUpdate[] = [...queuedUpdatesRef.current].map(
+      ([goalId, completed]) => ({ goalId, completed }),
+    )
+    queuedUpdatesRef.current.clear()
+    if (updates.length === 0) return
 
     try {
-      const updatedGoals = await completeGoals(goalIds)
+      const updatedGoals = await completeGoals(updates)
       setGoals((currentGoals) =>
         currentGoals.map((goal) => updatedGoals.find((updated) => updated.id === goal.id) ?? goal),
       )
     } catch {
       setGoals((currentGoals) =>
-        currentGoals.map((goal) =>
-          goalIds.includes(goal.id) ? { ...goal, status: 'active', completedAt: null } : goal,
-        ),
+        currentGoals.map((goal) => previousGoalsRef.current.get(goal.id) ?? goal),
       )
-      setError('Não foi possível concluir uma ou mais metas. Tente novamente.')
+      setError('Não foi possível atualizar uma ou mais metas. Tente novamente.')
+    } finally {
+      updates.forEach(({ goalId }) => previousGoalsRef.current.delete(goalId))
     }
   }, [])
 
-  const complete = useCallback(
-    (goalId: string) => {
+  const toggleCompletion = useCallback(
+    (goalId: string, completed: boolean) => {
       setError(null)
       setGoals((currentGoals) =>
-        currentGoals.map((goal) =>
-          goal.id === goalId
-            ? { ...goal, status: 'completed', completedAt: new Date().toISOString() }
-            : goal,
-        ),
+        currentGoals.map((goal) => {
+          if (goal.id !== goalId) return goal
+          if (!previousGoalsRef.current.has(goalId)) previousGoalsRef.current.set(goalId, goal)
+
+          return {
+            ...goal,
+            status: completed ? 'completed' : 'active',
+            completedAt: completed ? new Date().toISOString() : null,
+            completionReversibleUntil: completed ? goal.completionReversibleUntil : null,
+          }
+        }),
       )
-      queuedIdsRef.current.add(goalId)
+      queuedUpdatesRef.current.set(goalId, completed)
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = setTimeout(flush, debounceMs)
     },
@@ -61,5 +70,5 @@ export function useGoalCompletionQueue(initialGoals: Goal[]) {
     [],
   )
 
-  return { addGoal, complete, error, goals }
+  return { addGoal, error, goals, toggleCompletion }
 }

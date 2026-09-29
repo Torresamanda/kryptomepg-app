@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Drawer } from '@/components/ui/Drawer'
 import { Input } from '@/components/ui/Input'
 import { createGoal } from '../services/createGoal'
-import type { GoalAudience } from '../types/Goal'
+import { maxGoalTitleLength, type GoalAudience } from '../types/Goal'
 export function NewGoalDrawer({
   open,
   onClose,
@@ -36,6 +36,7 @@ export function NewGoalDrawer({
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           error={error ?? undefined}
+          maxLength={maxGoalTitleLength}
         />
         <fieldset className="grid gap-2">
           <legend className="text-sm font-medium">Tipo</legend>
@@ -45,7 +46,7 @@ export function NewGoalDrawer({
               name="goal-audience"
               checked={audience === 'personal'}
               onChange={() => setAudience('personal')}
-            />{' '}
+            />
             Minha meta
           </label>
           <label>
@@ -54,7 +55,7 @@ export function NewGoalDrawer({
               name="goal-audience"
               checked={audience === 'shared'}
               onChange={() => setAudience('shared')}
-            />{' '}
+            />
             Nossa meta
           </label>
         </fieldset>

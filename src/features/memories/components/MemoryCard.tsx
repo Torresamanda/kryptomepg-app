@@ -12,6 +12,7 @@ function formatElapsedTime(completedAt: string) {
   const completedDate = new Date(completedAt)
   const now = new Date()
   let years = now.getFullYear() - completedDate.getFullYear()
+
   const hasNotReachedAnniversary =
     now.getMonth() < completedDate.getMonth() ||
     (now.getMonth() === completedDate.getMonth() && now.getDate() < completedDate.getDate())
@@ -54,9 +55,11 @@ export function MemoryCard({ memory, onRemember, remembering }: MemoryCardProps)
 
       <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-7">
         <p className="text-xs font-medium uppercase text-text-secondary">Lembranças</p>
+
         <h2 className="mt-2 text-2xl font-semibold text-text-primary sm:text-3xl">
           {formatElapsedTime(memory.completedAt)}
         </h2>
+
         <p className="mt-2 text-sm text-text-secondary">
           Vocês concluíram <span className="font-medium text-brand-purple-300">{memory.title}</span>
         </p>

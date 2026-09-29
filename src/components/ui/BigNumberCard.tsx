@@ -21,6 +21,7 @@ export function BigNumberCard({
   ]
     .filter(Boolean)
     .join(' ')
+
   const valueClasses = [
     'font-sans text-3xl font-bold leading-none text-accent-blue-600 transition-colors',
     hoverValueClassName,

@@ -1,9 +1,11 @@
 export type GoalAudience = 'personal' | 'shared'
 export type GoalStatus = 'active' | 'completed'
+export const maxGoalTitleLength = 120
 
 export interface Goal {
   audience: GoalAudience
   completedAt: string | null
+  completionReversibleUntil: string | null
   createdAt: string
   id: string
   status: GoalStatus
@@ -13,4 +15,9 @@ export interface Goal {
 export interface CreateGoalInput {
   audience: GoalAudience
   title: string
+}
+
+export interface GoalCompletionUpdate {
+  completed: boolean
+  goalId: string
 }

@@ -17,9 +17,11 @@ export function PlatformLoader({ embedded = false }: PlatformLoaderProps) {
     >
       <div className="w-full max-w-xs text-center">
         <LoadingCassetteIcon className="mx-auto" />
+
         <p className="mt-6 font-memory text-lg text-brand-gold-500 animate-pulse">
           CARREGANDO JORNADA...
         </p>
+
         <div
           aria-hidden="true"
           className="relative mt-4 h-2 overflow-hidden rounded-full bg-surface-elevated"

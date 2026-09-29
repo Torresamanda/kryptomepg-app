@@ -6,7 +6,7 @@ import { GoalItem } from './GoalItem'
 interface UpcomingGoalsCardProps {
   goals: Goal[]
   error: string | null
-  onComplete: (goalId: string) => void
+  onToggleCompletion: (goalId: string, completed: boolean) => void
   onNewGoal: () => void
   onViewAll: () => void
 }
@@ -14,7 +14,7 @@ interface UpcomingGoalsCardProps {
 export function UpcomingGoalsCard({
   goals,
   error,
-  onComplete,
+  onToggleCompletion,
   onNewGoal,
   onViewAll,
 }: UpcomingGoalsCardProps) {
@@ -28,27 +28,32 @@ export function UpcomingGoalsCard({
           <h2 id="upcoming-goals-title" className="text-2xl font-semibold">
             Próximas metas
           </h2>
+
           <p className="mt-2 text-sm text-text-secondary">Objetivos pessoais e compartilhados</p>
         </div>
-        <Button onClick={onNewGoal} className="gap-2">
+
+        <Button variant="ghost" onClick={onNewGoal} className="shrink-0 gap-2 ">
           <PlusIcon size={18} aria-hidden="true" />
           Nova meta
         </Button>
       </div>
+
       <div className="mt-6 grid gap-3">
         {goals.map((goal) => (
-          <GoalItem key={goal.id} goal={goal} onComplete={onComplete} />
+          <GoalItem key={goal.id} goal={goal} onToggleCompletion={onToggleCompletion} />
         ))}
       </div>
+
       {error && (
         <p className="mt-4 text-sm text-error" role="alert">
           {error}
         </p>
       )}
+
       <button
         type="button"
         onClick={onViewAll}
-        className="mt-6 text-sm text-text-secondary underline underline-offset-4 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+        className="mt-6 cursor-pointer text-sm text-text-secondary underline underline-offset-4 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
       >
         Ver todas as metas →
       </button>

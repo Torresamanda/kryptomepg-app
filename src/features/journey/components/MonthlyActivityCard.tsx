@@ -22,6 +22,7 @@ export function MonthlyActivityCard({ activity }: MonthlyActivityCardProps) {
       <h2 id="monthly-activity-title" className="text-2xl font-semibold text-text-primary">
         Atividades deste mês
       </h2>
+
       <p className="mt-2 text-sm text-text-secondary">
         Sua consistência em {formatMonth(activity.month)}
       </p>

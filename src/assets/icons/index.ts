@@ -14,6 +14,7 @@ export {
   ClockIcon,
   CaretLeftIcon,
   CaretRightIcon,
+  CheckIcon,
   StarIcon,
   GameControllerIcon,
   TrophyIcon,
