@@ -50,9 +50,16 @@ export function ActivityCalendar({ dailyRecords, month }: ActivityCalendarProps)
             return (
               <li
                 key={`${period}-${weekday}`}
-                className={`aspect-square w-full rounded-lg transition-[filter,transform] duration-200 hover:scale-105 hover:brightness-110 ${getIntensityClass(count)}`}
+                className={`group relative aspect-square w-full rounded-lg transition-[filter,transform] duration-200 hover:scale-105 hover:brightness-110 ${getIntensityClass(count)}`}
                 aria-label={`${period}, ${weekday}: ${count} ${count === 1 ? 'registro' : 'registros'}`}
-              />
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-border-default bg-surface-default px-2 py-1 text-xs text-text-primary opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100"
+                >
+                  {count} {count === 1 ? 'atividade' : 'atividades'}
+                </span>
+              </li>
             )
           }),
         )}
