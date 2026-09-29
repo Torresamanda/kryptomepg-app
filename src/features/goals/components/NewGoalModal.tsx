@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
+import { notify } from '@/components/feedback/toast/notify'
 import { createGoal } from '../services/createGoal'
 import { maxGoalTitleLength, type GoalAudience } from '../types/Goal'
 
@@ -19,17 +20,32 @@ export function NewGoalModal({
   const [title, setTitle] = useState('')
   const [audience, setAudience] = useState<GoalAudience>('personal')
   const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault()
 
+    if (!title.trim()) {
+      setError('O título da meta é obrigatório.')
+      return
+    }
+
+    setError(null)
+    setIsSubmitting(true)
+
     try {
-      const goal = await createGoal({ title, audience })
+      const goal = await notify.promise(createGoal({ title, audience }), {
+        loading: 'Criando meta...',
+        success: 'Meta adicionada com sucesso.',
+        error: 'Não foi possível adicionar a meta. Tente novamente.',
+      })
       onCreated(goal)
       setTitle('')
       onClose()
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Não foi possível criar a meta.')
+    } catch {
+      // The toast already communicates an asynchronous operation failure.
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -39,8 +55,12 @@ export function NewGoalModal({
         <Input
           label="Título"
           value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(event) => {
+            setTitle(event.target.value)
+            setError(null)
+          }}
           error={error ?? undefined}
+          disabled={isSubmitting}
           maxLength={maxGoalTitleLength}
           className="focus-visible:border-brand-gold-400 focus-visible:ring-brand-gold-400/30"
         />
@@ -99,7 +119,9 @@ export function NewGoalModal({
             </label>
           </div>
         </fieldset>
-        <Button type="submit">Salvar meta</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Criando meta...' : 'Salvar meta'}
+        </Button>
       </form>
     </Modal>
   )
