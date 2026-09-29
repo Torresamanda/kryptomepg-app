@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
@@ -22,7 +22,7 @@ export function NewGoalModal({
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const submit = async (event: React.FormEvent) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!title.trim()) {

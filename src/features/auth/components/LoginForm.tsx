@@ -4,6 +4,8 @@ import { useState, type SubmitEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { getFirebaseClientAuth, isFirebaseClientConfigured } from '@/lib/firebase/client'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 interface LoginFormErrors {
   email?: string
@@ -46,10 +48,20 @@ export function LoginForm() {
     setIsSubmitting(true)
 
     try {
+      const payload = isFirebaseClientConfigured
+        ? {
+            idToken: await signInWithEmailAndPassword(
+              getFirebaseClientAuth(),
+              email,
+              password,
+            ).then(({ user }) => user.getIdToken()),
+          }
+        : { email, password }
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(payload),
       })
 
       if (response.status === 401) {

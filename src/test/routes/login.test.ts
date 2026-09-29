@@ -22,6 +22,7 @@ describe('POST /api/auth/login', () => {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
+      maxAge: 86_400,
     })
   })
 
