@@ -5,7 +5,7 @@ import type { Goal } from '../types/Goal'
 import { useQueryDrawer } from '@/hooks/useQueryDrawer/useQueryDrawer'
 import { useGoalCompletionQueue } from '../hooks/useGoalCompletionQueue/useGoalCompletionQueue'
 import { GoalsDrawer } from './GoalsDrawer'
-import { NewGoalDrawer } from './NewGoalDrawer'
+import { NewGoalModal } from './NewGoalModal'
 import { UpcomingGoalsCard } from './UpcomingGoalsCard'
 
 export function GoalsSection({ initialGoals }: { initialGoals: Goal[] }) {
@@ -24,7 +24,7 @@ export function GoalsSection({ initialGoals }: { initialGoals: Goal[] }) {
       />
       <GoalsDrawer open={goalsDrawer.isOpen} onClose={goalsDrawer.close} />
 
-      <NewGoalDrawer
+      <NewGoalModal
         open={newGoalDrawer.isOpen}
         onClose={newGoalDrawer.close}
         onCreated={queue.addGoal}
