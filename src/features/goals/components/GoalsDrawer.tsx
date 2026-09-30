@@ -8,6 +8,7 @@ import { Drawer } from '@/components/ui/Drawer'
 import { FilterMenu } from '@/components/ui/FilterMenu'
 import { Modal } from '@/components/ui/Modal'
 import { SearchInput } from '@/components/ui/SearchInput'
+import { completeGoals } from '../services/completeGoals'
 import { deleteGoal } from '../services/deleteGoal'
 import { getGoals } from '../services/getGoals'
 import type { Goal, GoalAudienceFilter } from '../types/Goal'
@@ -80,6 +81,20 @@ export function GoalsDrawer({ onClose, onGoalsChanged, open }: GoalsDrawerProps)
     }
   }
 
+  const handleToggleCompletion = async (goalId: string, completed: boolean) => {
+    setError(null)
+
+    try {
+      const [updatedGoal] = await completeGoals([{ goalId, completed }])
+      setGoals((currentGoals) =>
+        currentGoals.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal)),
+      )
+      await onGoalsChanged()
+    } catch {
+      setError('Não foi possível atualizar a meta. Tente novamente.')
+    }
+  }
+
   return (
     <>
       <Drawer
@@ -137,6 +152,7 @@ export function GoalsDrawer({ onClose, onGoalsChanged, open }: GoalsDrawerProps)
                     setIsGoalModalOpen(true)
                   }}
                   onDelete={setDeletingGoal}
+                  onToggleCompletion={handleToggleCompletion}
                 />
               ))}
             </ul>
