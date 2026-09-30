@@ -165,7 +165,7 @@ export function ExperienceDetailsModal({
       ) : (
         <>
           <div className="grid gap-5 sm:grid-cols-[9rem_1fr]">
-            <div className="relative mx-auto h-48 w-32 overflow-hidden rounded-md border border-border-default bg-surface-elevated sm:mx-0 sm:h-auto sm:w-auto sm:aspect-[3/4]">
+            <div className="relative mx-auto h-48 w-32 overflow-hidden rounded-md border border-border-default bg-surface-elevated sm:mx-0 sm:h-auto sm:w-auto sm:aspect-3/4">
               <ImageWithFallback
                 src={experience.coverImageUrl}
                 alt={
@@ -282,11 +282,11 @@ export function ExperienceDetailsModal({
             </section>
           ) : null}
 
-          <ExperienceDiary experience={experience} />
+          {experience.status === 'completed' ? <ExperienceDiary experience={experience} /> : null}
 
           {isConfirmingDelete ? (
             <section
-              className="mt-7 rounded-md border border-error/60 bg-error/10 p-4"
+              className={`${experience.status === 'completed' ? 'mt-7' : 'mt-5'} rounded-md border border-error/60 bg-error/10 p-4`}
               aria-labelledby="delete-experience-title"
             >
               <h3 id="delete-experience-title" className="text-sm font-semibold text-text-primary">
@@ -313,7 +313,9 @@ export function ExperienceDetailsModal({
               </div>
             </section>
           ) : (
-            <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+            <div
+              className={`${experience.status === 'completed' ? 'mt-7' : 'mt-5'} flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end`}
+            >
               <Button
                 variant="ghost"
                 className="text-error hover:bg-error/10 hover:text-error"
