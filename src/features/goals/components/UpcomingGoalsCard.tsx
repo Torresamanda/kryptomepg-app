@@ -20,7 +20,7 @@ export function UpcomingGoalsCard({
 }: UpcomingGoalsCardProps) {
   return (
     <section
-      className="rounded-lg border border-border-default bg-background-secondary p-5 sm:p-7"
+      className="h-full rounded-lg border border-border-default bg-background-secondary p-5 sm:p-7"
       aria-labelledby="upcoming-goals-title"
     >
       <div className="flex items-start justify-between gap-4">

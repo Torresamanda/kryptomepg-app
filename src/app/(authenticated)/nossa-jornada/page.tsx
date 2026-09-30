@@ -9,6 +9,8 @@ import { getJourneyHighlights } from '@/features/journey/services/getJourneyHigh
 import { getMonthlyActivity } from '@/features/journey/services/getMonthlyActivity'
 import { getRandomMemory } from '@/features/memories/services/getRandomMemory'
 import { getRecentGoals } from '@/features/goals/services/getRecentGoals'
+import { TimelinePreviewCard } from '@/features/timeline/components/TimelinePreviewCard'
+import { getTimelineEvents } from '@/features/timeline/services/getTimelineEvents'
 
 function getCurrentMonth() {
   const date = new Date()
@@ -16,12 +18,13 @@ function getCurrentMonth() {
 }
 
 export default async function NossaJornadaPage() {
-  const [user, highlights, monthlyActivity, memory, goals] = await Promise.all([
+  const [user, highlights, monthlyActivity, memory, goals, timeline] = await Promise.all([
     getCurrentUser(),
     getJourneyHighlights(),
     getMonthlyActivity(getCurrentMonth()),
     getRandomMemory(),
     getRecentGoals(),
+    getTimelineEvents({ limit: 4 }),
   ])
 
   if (!user) return null
@@ -38,7 +41,10 @@ export default async function NossaJornadaPage() {
         </div>
       </div>
       <MemorySection initialMemory={memory} />
-      <GoalsSection initialGoals={goals} />
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[12fr_9fr]">
+        <GoalsSection initialGoals={goals} />
+        <TimelinePreviewCard events={timeline.events} />
+      </div>
     </PageContainer>
   )
 }
