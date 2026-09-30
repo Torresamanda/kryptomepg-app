@@ -63,6 +63,8 @@ export function useGoalCompletionQueue(initialGoals: Goal[]) {
     [],
   )
 
+  const replaceGoals = useCallback((updatedGoals: Goal[]) => setGoals(updatedGoals), [])
+
   useEffect(
     () => () => {
       if (timerRef.current) clearTimeout(timerRef.current)
@@ -70,5 +72,5 @@ export function useGoalCompletionQueue(initialGoals: Goal[]) {
     [],
   )
 
-  return { addGoal, error, goals, toggleCompletion }
+  return { addGoal, error, goals, replaceGoals, toggleCompletion }
 }

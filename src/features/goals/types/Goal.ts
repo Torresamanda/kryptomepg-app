@@ -17,6 +17,18 @@ export interface CreateGoalInput {
   title: string
 }
 
+export interface UpdateGoalInput {
+  audience: GoalAudience
+  title: string
+}
+
+export type GoalAudienceFilter = GoalAudience | 'all'
+
+export interface GetGoalsOptions {
+  audience?: GoalAudienceFilter
+  query?: string
+}
+
 export interface GoalCompletionUpdate {
   completed: boolean
   goalId: string

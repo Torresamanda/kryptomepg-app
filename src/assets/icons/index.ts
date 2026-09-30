@@ -6,6 +6,8 @@ export { MaleAvatarIcon } from './MaleAvatarIcon'
 export {
   HeartIcon,
   PlusIcon,
+  PencilSimpleIcon,
+  TrashIcon,
   UserIcon,
   UsersIcon,
   ArrowRightIcon,

@@ -5,6 +5,7 @@ export async function createGoal({ audience, title }: CreateGoalInput): Promise<
   const normalizedTitle = title.trim()
 
   if (!normalizedTitle) throw new Error('O título da meta é obrigatório.')
+
   if (normalizedTitle.length > maxGoalTitleLength)
     throw new Error(`O título deve ter no máximo ${maxGoalTitleLength} caracteres.`)
 

@@ -17,14 +17,14 @@ vi.mock('@/components/feedback/toast/notify', () => ({
   notify: { promise: mockNotifyPromise },
 }))
 
-function renderModal(onCreated = vi.fn(), onClose = vi.fn()) {
+function renderModal(onSaved = vi.fn(), onClose = vi.fn()) {
   render(
     <DrawerStackProvider>
-      <NewGoalModal open={true} onClose={onClose} onCreated={onCreated} />
+      <NewGoalModal open={true} onClose={onClose} onSaved={onSaved} />
     </DrawerStackProvider>,
   )
 
-  return { onClose, onCreated }
+  return { onClose, onSaved }
 }
 
 describe('NewGoalModal', () => {
@@ -41,7 +41,7 @@ describe('NewGoalModal', () => {
           resolveCreation = resolve
         }),
     )
-    const { onClose, onCreated } = renderModal()
+    const { onClose, onSaved } = renderModal()
 
     await user.type(screen.getByLabelText('Título'), 'Assistir Interestelar')
     await user.click(screen.getByRole('button', { name: 'Salvar meta' }))
@@ -51,20 +51,20 @@ describe('NewGoalModal', () => {
       success: 'Meta adicionada com sucesso.',
       error: 'Não foi possível adicionar a meta. Tente novamente.',
     })
-    expect(screen.getByRole('button', { name: 'Criando meta...' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Salvando meta...' })).toBeDisabled()
 
     await act(async () => {
       resolveCreation({ id: 'goal-1', title: 'Assistir Interestelar' })
     })
 
-    expect(onCreated).toHaveBeenCalledWith({ id: 'goal-1', title: 'Assistir Interestelar' })
+    expect(onSaved).toHaveBeenCalledWith({ id: 'goal-1', title: 'Assistir Interestelar' })
     expect(onClose).toHaveBeenCalledOnce()
   })
 
   it('keeps the modal open when goal creation fails after showing the error toast', async () => {
     const user = userEvent.setup()
     mockCreateGoal.mockRejectedValue(new Error('Service unavailable'))
-    const { onClose, onCreated } = renderModal()
+    const { onClose, onSaved } = renderModal()
 
     await user.type(screen.getByLabelText('Título'), 'Assistir Interestelar')
     await user.click(screen.getByRole('button', { name: 'Salvar meta' }))
@@ -74,7 +74,7 @@ describe('NewGoalModal', () => {
       success: 'Meta adicionada com sucesso.',
       error: 'Não foi possível adicionar a meta. Tente novamente.',
     })
-    expect(onCreated).not.toHaveBeenCalled()
+    expect(onSaved).not.toHaveBeenCalled()
     expect(onClose).not.toHaveBeenCalled()
     expect(screen.getByRole('dialog', { name: 'Nova meta' })).toBeVisible()
   })

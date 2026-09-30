@@ -6,11 +6,13 @@ Batches rapid goal-completion actions before sending them to the goal service.
 
 ## Public API
 
-`useGoalCompletionQueue(initialGoals)` returns the current goals, `toggleCompletion`, `addGoal`, and any completion error.
+`useGoalCompletionQueue(initialGoals)` returns the current goals, `toggleCompletion`, `addGoal`, `replaceGoals`, and any completion error.
 
 ## Usage
 
 Call `toggleCompletion(goalId, completed)` when a person changes a goal's completion state.
+
+Call `replaceGoals(goals)` after a separate management interface creates, updates, or deletes goals and the recent-goals query has been refreshed.
 
 ## Behavior
 

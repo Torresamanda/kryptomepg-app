@@ -6,19 +6,22 @@ import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
 import { notify } from '@/components/feedback/toast/notify'
 import { createGoal } from '../services/createGoal'
-import { maxGoalTitleLength, type GoalAudience } from '../types/Goal'
+import { updateGoal } from '../services/updateGoal'
+import { maxGoalTitleLength, type Goal, type GoalAudience } from '../types/Goal'
 
 export function NewGoalModal({
+  goal,
   open,
   onClose,
-  onCreated,
+  onSaved,
 }: {
+  goal?: Goal
   open: boolean
   onClose: () => void
-  onCreated: (goal: Awaited<ReturnType<typeof createGoal>>) => void
+  onSaved: (goal: Goal) => void
 }) {
-  const [title, setTitle] = useState('')
-  const [audience, setAudience] = useState<GoalAudience>('personal')
+  const [title, setTitle] = useState(goal?.title ?? '')
+  const [audience, setAudience] = useState<GoalAudience>(goal?.audience ?? 'personal')
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -34,12 +37,21 @@ export function NewGoalModal({
     setIsSubmitting(true)
 
     try {
-      const goal = await notify.promise(createGoal({ title, audience }), {
-        loading: 'Criando meta...',
-        success: 'Meta adicionada com sucesso.',
-        error: 'Não foi possível adicionar a meta. Tente novamente.',
-      })
-      onCreated(goal)
+      const savedGoal = await notify.promise(
+        goal ? updateGoal(goal.id, { title, audience }) : createGoal({ title, audience }),
+        goal
+          ? {
+              loading: 'Atualizando meta...',
+              success: 'Meta atualizada com sucesso.',
+              error: 'Não foi possível atualizar a meta. Tente novamente.',
+            }
+          : {
+              loading: 'Criando meta...',
+              success: 'Meta adicionada com sucesso.',
+              error: 'Não foi possível adicionar a meta. Tente novamente.',
+            },
+      )
+      onSaved(savedGoal)
       setTitle('')
       onClose()
     } catch {
@@ -50,7 +62,12 @@ export function NewGoalModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} eyebrow="ADICIONAR" title="Nova meta">
+    <Modal
+      open={open}
+      onClose={onClose}
+      eyebrow={goal ? 'EDITAR' : 'ADICIONAR'}
+      title={goal ? 'Editar meta' : 'Nova meta'}
+    >
       <form onSubmit={submit} className="grid gap-5">
         <Input
           label="Título"
@@ -120,7 +137,7 @@ export function NewGoalModal({
           </div>
         </fieldset>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Criando meta...' : 'Salvar meta'}
+          {isSubmitting ? 'Salvando meta...' : 'Salvar meta'}
         </Button>
       </form>
     </Modal>

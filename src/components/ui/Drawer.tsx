@@ -7,15 +7,31 @@ import { Button } from './Button'
 import { XIcon } from '@/assets/icons'
 
 interface DrawerProps {
-  open: boolean
-  onClose: () => void
-  title: string
+  children?: ReactNode
+  contentClassName?: string
   description?: string
   eyebrow?: string
-  children?: ReactNode
+  open: boolean
+  onClose: () => void
+  size?: 'default' | 'wide'
+  title: string
 }
 
-export function Drawer({ children, description, eyebrow, onClose, open, title }: DrawerProps) {
+const sizeClasses = {
+  default: 'max-w-md',
+  wide: 'max-w-2xl',
+}
+
+export function Drawer({
+  children,
+  contentClassName,
+  description,
+  eyebrow,
+  onClose,
+  open,
+  size = 'default',
+  title,
+}: DrawerProps) {
   const drawerId = useId()
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const { getDrawerIndex, isTopDrawer, registerDrawer, unregisterDrawer } = useDrawerStack()
@@ -61,7 +77,7 @@ export function Drawer({ children, description, eyebrow, onClose, open, title }:
         role="dialog"
         aria-modal={isTop || undefined}
         aria-label={title}
-        className={`absolute inset-y-0 right-0 flex w-full max-w-md flex-col border-l border-border-default bg-surface-default p-6 shadow-2xl transition-transform duration-300 ease-out sm:p-8 ${
+        className={`absolute inset-y-0 right-0 flex w-full ${sizeClasses[size]} flex-col border-l border-border-default bg-surface-default p-6 shadow-2xl transition-transform duration-300 ease-out sm:p-8 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -85,7 +101,7 @@ export function Drawer({ children, description, eyebrow, onClose, open, title }:
         </div>
 
         {description && <p className="mt-6 text-sm leading-6 text-text-secondary">{description}</p>}
-        {children && <div className="mt-6">{children}</div>}
+        {children && <div className={`mt-6 ${contentClassName ?? ''}`}>{children}</div>}
       </aside>
     </div>
   )
