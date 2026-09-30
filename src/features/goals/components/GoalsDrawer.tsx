@@ -114,22 +114,24 @@ export function GoalsDrawer({ onClose, onGoalsChanged, open }: GoalsDrawerProps)
               onChange={(event) => setQuery(event.target.value)}
             />
           </div>
-          <FilterMenu
-            value={audience}
-            clearValue="all"
-            options={audienceOptions}
-            onChange={(value) => setAudience(value as GoalAudienceFilter)}
-          />
-          <Button
-            onClick={() => {
-              setEditingGoal(null)
-              setIsGoalModalOpen(true)
-            }}
-            className="min-h-12 shrink-0 gap-2"
-            title="Nova meta"
-          >
-            <PlusIcon size={18} aria-hidden="true" />
-          </Button>
+          <div className="flex items-start gap-3">
+            <FilterMenu
+              value={audience}
+              clearValue="all"
+              options={audienceOptions}
+              onChange={(value) => setAudience(value as GoalAudienceFilter)}
+            />
+            <Button
+              onClick={() => {
+                setEditingGoal(null)
+                setIsGoalModalOpen(true)
+              }}
+              className="min-h-12 flex-1 gap-2 sm:flex-none"
+              title="Nova meta"
+            >
+              <PlusIcon size={18} aria-hidden="true" />
+            </Button>
+          </div>
         </div>
 
         <div className="mt-6 min-h-0 flex-1 overflow-y-auto pr-1">

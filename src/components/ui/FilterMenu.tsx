@@ -47,7 +47,7 @@ export function FilterMenu({
   }, [])
 
   return (
-    <div ref={rootRef} className="relative flex items-center gap-2">
+    <div ref={rootRef} className="relative flex w-fit shrink-0 items-center gap-2">
       <button
         type="button"
         aria-expanded={isOpen}

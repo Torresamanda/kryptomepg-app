@@ -52,7 +52,15 @@ export function GoalManagementItem({
       >
         {isCompleted && <CheckIcon size={14} weight="bold" aria-hidden="true" />}
       </button>
-      <div className="min-w-0 flex-1">
+      <button
+        type="button"
+        disabled={isDisabled}
+        onClick={() => onToggleCompletion(goal.id, !isCompleted)}
+        aria-label={`${isCompleted ? 'Marcar como pendente' : 'Concluir meta'}: ${goal.title}`}
+        className={`min-w-0 flex-1 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus ${
+          isDisabled ? '' : 'cursor-pointer'
+        }`}
+      >
         <p
           className={`wrap-break-words text-sm ${isCompleted ? 'text-text-secondary line-through' : 'text-text-primary'}`}
         >
@@ -61,7 +69,7 @@ export function GoalManagementItem({
         <p className="mt-1 text-xs text-text-muted">
           {goal.audience === 'personal' ? 'Minha meta' : 'Nossa meta'}
         </p>
-      </div>
+      </button>
       <div className="flex shrink-0 items-center gap-1">
         <Button
           variant="ghost"
