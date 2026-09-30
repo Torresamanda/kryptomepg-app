@@ -11,6 +11,10 @@ interface ImageWithFallbackProps {
   src: string | null
 }
 
+function isExternalImage(src: string) {
+  return /^https?:\/\//i.test(src)
+}
+
 export function ImageWithFallback({
   alt,
   className,
@@ -20,6 +24,19 @@ export function ImageWithFallback({
 }: ImageWithFallbackProps) {
   const [hasError, setHasError] = useState(false)
   const imageSrc = hasError || !src ? '/not-found.png' : src
+
+  if (isExternalImage(imageSrc)) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={imageSrc}
+        alt={alt}
+        className={`absolute inset-0 size-full ${className ?? ''}`}
+        loading={loading}
+        onError={() => setHasError(true)}
+      />
+    )
+  }
 
   return (
     <Image

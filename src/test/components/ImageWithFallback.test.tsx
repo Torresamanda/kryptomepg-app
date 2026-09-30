@@ -19,6 +19,13 @@ describe('ImageWithFallback', () => {
     )
   })
 
+  it('renders external image links without Next image optimization', () => {
+    const imageUrl = 'https://cdn2.steamgriddb.com/thumb/97b0724d4dc613ce5bde0fcbe9267b71.jpg'
+    render(<ImageWithFallback src={imageUrl} alt="Capa externa" />)
+
+    expect(screen.getByAltText('Capa externa')).toHaveAttribute('src', imageUrl)
+  })
+
   it('uses the generic image after a loading error', () => {
     render(<ImageWithFallback src="/missing-cover.png" alt="Capa indisponível" />)
 

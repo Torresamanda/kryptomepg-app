@@ -14,7 +14,9 @@ import type { Experience, ExperienceStatus } from '../types/Experience'
 
 interface ExperienceCardProps {
   experience: Experience
+  onOpenDetails: (experience: Experience) => void
   onToggleFavorite: (experience: Experience) => void
+  prioritizeImage?: boolean
 }
 
 const statusPresentation: Record<
@@ -83,7 +85,12 @@ function ExperienceTypeIcon({ type }: { type: Experience['type'] }) {
   return <StarIcon size={18} aria-hidden="true" />
 }
 
-export function ExperienceCard({ experience, onToggleFavorite }: ExperienceCardProps) {
+export function ExperienceCard({
+  experience,
+  onOpenDetails,
+  onToggleFavorite,
+  prioritizeImage = false,
+}: ExperienceCardProps) {
   const presentation = statusPresentation[experience.status]
   const progress = getProgressDetails(experience)
   const rating = experience.review?.rating
@@ -91,7 +98,19 @@ export function ExperienceCard({ experience, onToggleFavorite }: ExperienceCardP
   const ownerLabel = experience.ownership === 'shared' ? 'Juntos' : experience.owner?.name
 
   return (
-    <article className="flex w-64 shrink-0 flex-col overflow-hidden rounded-lg border border-border-default bg-surface-default sm:w-68 lg:w-auto">
+    <article
+      className="flex w-64 shrink-0 cursor-pointer flex-col overflow-hidden rounded-lg border border-border-default bg-surface-default transition-colors hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus sm:w-68 lg:w-auto"
+      tabIndex={0}
+      role="button"
+      aria-label={`Abrir detalhes de ${experience.title}`}
+      onClick={() => onOpenDetails(experience)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onOpenDetails(experience)
+        }
+      }}
+    >
       <div className="relative h-32 w-full shrink-0">
         <ImageWithFallback
           src={experience.coverImageUrl}
@@ -101,7 +120,7 @@ export function ExperienceCard({ experience, onToggleFavorite }: ExperienceCardP
               : `Imagem não disponível para ${experience.title}`
           }
           className="object-cover"
-          loading="lazy"
+          loading={prioritizeImage ? 'eager' : 'lazy'}
           sizes="(min-width: 1024px) 25vw, 256px"
         />
         <span className="absolute left-3 top-3 flex size-8 items-center justify-center rounded-full bg-background-primary/80 text-brand-gold-500">
@@ -111,7 +130,10 @@ export function ExperienceCard({ experience, onToggleFavorite }: ExperienceCardP
           <button
             type="button"
             onPointerDown={(event) => event.stopPropagation()}
-            onClick={() => onToggleFavorite(experience)}
+            onClick={(event) => {
+              event.stopPropagation()
+              onToggleFavorite(experience)
+            }}
             aria-label={`${experience.favorite.isFavoriteByCurrentUser ? 'Remover' : 'Adicionar'} ${experience.title} dos favoritos`}
             aria-pressed={experience.favorite.isFavoriteByCurrentUser}
             className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-background-primary/80 text-brand-purple-400 transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"

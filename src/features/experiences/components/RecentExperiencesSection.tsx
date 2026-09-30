@@ -8,6 +8,7 @@ import { useDragScroll } from '@/hooks/useDragScroll/useDragScroll'
 import { updateExperienceFavorite } from '../services/updateExperienceFavorite'
 import type { Experience } from '../types/Experience'
 import { ExperienceCard } from './ExperienceCard'
+import { ExperienceDetailsModal } from './ExperienceDetailsModal'
 
 interface RecentExperiencesSectionProps {
   initialExperiences: Experience[]
@@ -15,6 +16,7 @@ interface RecentExperiencesSectionProps {
 
 export function RecentExperiencesSection({ initialExperiences }: RecentExperiencesSectionProps) {
   const [experiences, setExperiences] = useState(initialExperiences)
+  const [selectedExperienceId, setSelectedExperienceId] = useState<string | null>(null)
   const dragScroll = useDragScroll<HTMLDivElement>()
 
   const toggleFavorite = async (experience: Experience) => {
@@ -73,15 +75,36 @@ export function RecentExperiencesSection({ initialExperiences }: RecentExperienc
           {...dragScroll}
           className="drag-scroll mt-6 -mr-5 flex snap-x cursor-grab touch-pan-y gap-4 overflow-x-auto pb-2 pr-5 select-none active:cursor-grabbing sm:-mr-7 sm:pr-7 lg:mr-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pr-0"
         >
-          {experiences.map((experience) => (
+          {experiences.map((experience, index) => (
             <ExperienceCard
               key={experience.id}
               experience={experience}
+              onOpenDetails={(selectedExperience) => setSelectedExperienceId(selectedExperience.id)}
               onToggleFavorite={toggleFavorite}
+              prioritizeImage={index === 0}
             />
           ))}
         </div>
       )}
+
+      <ExperienceDetailsModal
+        experienceId={selectedExperienceId}
+        open={selectedExperienceId !== null}
+        onClose={() => setSelectedExperienceId(null)}
+        onExperienceDeleted={(experienceId) => {
+          setExperiences((currentExperiences) =>
+            currentExperiences.filter((currentExperience) => currentExperience.id !== experienceId),
+          )
+          setSelectedExperienceId(null)
+        }}
+        onExperienceUpdated={(updatedExperience) =>
+          setExperiences((currentExperiences) =>
+            currentExperiences.map((currentExperience) =>
+              currentExperience.id === updatedExperience.id ? updatedExperience : currentExperience,
+            ),
+          )
+        }
+      />
     </section>
   )
 }

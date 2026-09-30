@@ -11,10 +11,19 @@ interface ModalProps {
   eyebrow?: string
   onClose: () => void
   open: boolean
+  size?: 'default' | 'wide'
   title: string
 }
 
-export function Modal({ children, description, eyebrow, onClose, open, title }: ModalProps) {
+export function Modal({
+  children,
+  description,
+  eyebrow,
+  onClose,
+  open,
+  size = 'default',
+  title,
+}: ModalProps) {
   const modalId = useId()
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const { getDrawerIndex, isTopDrawer, registerDrawer, unregisterDrawer } = useDrawerStack()
@@ -60,7 +69,7 @@ export function Modal({ children, description, eyebrow, onClose, open, title }: 
         role="dialog"
         aria-modal={isTop || undefined}
         aria-label={title}
-        className={`absolute inset-x-4 top-1/2 mx-auto w-auto max-w-md -translate-y-1/2 rounded-lg border border-border-default bg-surface-default p-6 shadow-2xl transition-[opacity,transform] duration-200 ease-out sm:p-8 ${
+        className={`absolute inset-x-3 top-1/2 mx-auto max-h-[calc(100dvh-1.5rem)] w-auto ${size === 'wide' ? 'max-w-2xl' : 'max-w-md'} -translate-y-1/2 overflow-y-auto overscroll-contain rounded-lg border border-border-default bg-surface-default p-4 shadow-2xl transition-[opacity,transform] duration-200 ease-out sm:inset-x-4 sm:max-h-[calc(100dvh-2rem)] sm:p-8 ${
           open ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         }`}
       >

@@ -11,6 +11,7 @@ const sharedPlatinumExperience: Experience = {
   status: 'completed',
   ownership: 'shared',
   owner: null,
+  createdAt: '2026-09-01T12:00:00Z',
   coverImageUrl: null,
   favorite: { isFavoriteByCurrentUser: false, isFavoriteByCouple: true },
   progress: { current: 48, total: 48, unit: 'hours' },
@@ -21,7 +22,13 @@ const sharedPlatinumExperience: Experience = {
 
 describe('ExperienceCard', () => {
   it('shows shared ownership, progress, and the platinum indicator', () => {
-    render(<ExperienceCard experience={sharedPlatinumExperience} onToggleFavorite={vi.fn()} />)
+    render(
+      <ExperienceCard
+        experience={sharedPlatinumExperience}
+        onOpenDetails={vi.fn()}
+        onToggleFavorite={vi.fn()}
+      />,
+    )
 
     expect(screen.getByText('Juntos')).toBeInTheDocument()
     expect(screen.getByText('48h jogadas')).toBeInTheDocument()
@@ -34,7 +41,11 @@ describe('ExperienceCard', () => {
     const onToggleFavorite = vi.fn()
 
     render(
-      <ExperienceCard experience={sharedPlatinumExperience} onToggleFavorite={onToggleFavorite} />,
+      <ExperienceCard
+        experience={sharedPlatinumExperience}
+        onOpenDetails={vi.fn()}
+        onToggleFavorite={onToggleFavorite}
+      />,
     )
 
     await user.click(
@@ -44,5 +55,24 @@ describe('ExperienceCard', () => {
     )
 
     expect(onToggleFavorite).toHaveBeenCalledWith(sharedPlatinumExperience)
+  })
+
+  it('opens its details when the card is selected', async () => {
+    const user = userEvent.setup()
+    const onOpenDetails = vi.fn()
+
+    render(
+      <ExperienceCard
+        experience={sharedPlatinumExperience}
+        onOpenDetails={onOpenDetails}
+        onToggleFavorite={vi.fn()}
+      />,
+    )
+
+    await user.click(
+      screen.getByRole('button', { name: 'Abrir detalhes de Shadow of the Tomb Raider' }),
+    )
+
+    expect(onOpenDetails).toHaveBeenCalledWith(sharedPlatinumExperience)
   })
 })

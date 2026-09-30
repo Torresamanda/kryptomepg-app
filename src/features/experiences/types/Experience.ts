@@ -28,6 +28,7 @@ export interface ExperienceReview {
 
 export interface Experience {
   coverImageUrl: string | null
+  createdAt: string
   favorite: ExperienceFavoriteState
   id: string
   lastActivityAt: string
@@ -39,4 +40,33 @@ export interface Experience {
   status: ExperienceStatus
   title: string
   type: ExperienceType
+}
+
+export type ExperienceActivityType =
+  | 'created'
+  | 'cover_updated'
+  | 'note_added'
+  | 'progress_updated'
+  | 'review_updated'
+  | 'status_updated'
+
+export interface ExperienceActivity {
+  actor: ExperienceOwner | null
+  id: string
+  occurredAt: string
+  summary: string
+  type: ExperienceActivityType
+}
+
+export interface ExperienceDetails extends Experience {
+  activities: ExperienceActivity[]
+}
+
+export interface UpdateExperienceRequest {
+  activityNote?: string | null
+  coverImageUrl?: string | null
+  favorite?: ExperienceFavoriteState
+  progress?: ExperienceProgress | null
+  review?: Pick<ExperienceReview, 'comment' | 'rating'> | null
+  status?: ExperienceStatus
 }
