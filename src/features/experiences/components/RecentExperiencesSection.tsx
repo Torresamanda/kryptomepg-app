@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { ArrowRightIcon } from '@/assets/icons'
 import { useDragScroll } from '@/hooks/useDragScroll/useDragScroll'
 import type { Experience } from '../types/Experience'
@@ -12,6 +13,17 @@ interface RecentExperiencesSectionProps {
 
 export function RecentExperiencesSection({ initialExperiences }: RecentExperiencesSectionProps) {
   const dragScroll = useDragScroll<HTMLDivElement>()
+  const [experiences, setExperiences] = useState(initialExperiences)
+
+  useEffect(() => {
+    const handleCreated = (event: Event) => {
+      const experience = (event as CustomEvent<Experience>).detail
+      setExperiences((currentExperiences) => [experience, ...currentExperiences].slice(0, 4))
+    }
+
+    window.addEventListener('kryptompeg:experience-created', handleCreated)
+    return () => window.removeEventListener('kryptompeg:experience-created', handleCreated)
+  }, [])
 
   return (
     <section
@@ -36,14 +48,14 @@ export function RecentExperiencesSection({ initialExperiences }: RecentExperienc
         </Link>
       </div>
 
-      {initialExperiences.length === 0 ? (
+      {experiences.length === 0 ? (
         <p className="mt-6 text-sm text-text-secondary">Nenhuma experiência recente ainda.</p>
       ) : (
         <div
           {...dragScroll}
           className="drag-scroll mt-6 -mr-5 flex snap-x cursor-grab touch-pan-y gap-4 overflow-x-auto pb-2 pr-5 select-none active:cursor-grabbing sm:-mr-7 sm:pr-7 lg:mr-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pr-0"
         >
-          {initialExperiences.map((experience, index) => (
+          {experiences.map((experience, index) => (
             <ExperienceCard
               key={experience.id}
               experience={experience}

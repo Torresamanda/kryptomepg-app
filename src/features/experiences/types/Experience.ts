@@ -70,3 +70,11 @@ export interface UpdateExperienceRequest {
   review?: Pick<ExperienceReview, 'comment' | 'rating'> | null
   status?: ExperienceStatus
 }
+
+export interface CreateExperienceRequest {
+  coverImageUrl?: string | null
+  progress: Pick<ExperienceProgress, 'total' | 'unit'>
+  status: ExperienceStatus
+  title: string
+  type: Extract<ExperienceType, 'book' | 'game'>
+}

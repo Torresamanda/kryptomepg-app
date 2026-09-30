@@ -2,12 +2,46 @@ import { describe, expect, it } from 'vitest'
 import { experienceActivitiesMock } from '@/features/experiences/mocks/experienceActivities.mock'
 import { experiencesMock } from '@/features/experiences/mocks/experiences.mock'
 import { deleteExperience } from '@/features/experiences/services/deleteExperience'
+import { createExperience } from '@/features/experiences/services/createExperience'
 import { getExperienceDetails } from '@/features/experiences/services/getExperienceDetails'
 import { getRecentExperiences } from '@/features/experiences/services/getRecentExperiences'
 import { updateExperience } from '@/features/experiences/services/updateExperience'
 import { updateExperienceFavorite } from '@/features/experiences/services/updateExperienceFavorite'
 
 describe('experience services', () => {
+  it('creates a game with its initial progress and a diary entry', async () => {
+    const createdExperience = await createExperience({
+      title: 'Celeste',
+      type: 'game',
+      status: 'completed',
+      progress: { total: 12, unit: 'hours' },
+    })
+
+    expect(createdExperience).toMatchObject({
+      title: 'Celeste',
+      type: 'game',
+      status: 'completed',
+      progress: { current: 12, total: 12, unit: 'hours' },
+      review: { comment: null, rating: null },
+    })
+    expect(createdExperience.activities).toEqual(
+      expect.arrayContaining([expect.objectContaining({ type: 'created' })]),
+    )
+
+    await deleteExperience(createdExperience.id)
+  })
+
+  it('rejects a progress unit that does not match the experience type', async () => {
+    await expect(
+      createExperience({
+        title: 'Livro inválido',
+        type: 'book',
+        status: 'reading',
+        progress: { total: 20, unit: 'hours' },
+      }),
+    ).rejects.toThrow('O tipo de experiência não corresponde à unidade de progresso.')
+  })
+
   it('returns recent experiences up to the requested limit', async () => {
     const experiences = await getRecentExperiences(2)
 

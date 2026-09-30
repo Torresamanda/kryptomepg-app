@@ -1,9 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { PlusIcon } from '@/assets/icons'
 import { notify } from '@/components/feedback/toast/notify'
+import { Button } from '@/components/ui/Button'
+import { useQueryDrawer } from '@/hooks/useQueryDrawer/useQueryDrawer'
 import { updateExperienceFavorite } from '../services/updateExperienceFavorite'
-import type { Experience } from '../types/Experience'
+import type { Experience, ExperienceDetails } from '../types/Experience'
 import { ExperienceCard } from './ExperienceCard'
 import { ExperienceDetailsModal } from './ExperienceDetailsModal'
 
@@ -14,6 +17,17 @@ interface ExperienceLibraryProps {
 export function ExperienceLibrary({ initialExperiences }: ExperienceLibraryProps) {
   const [experiences, setExperiences] = useState(initialExperiences)
   const [selectedExperienceId, setSelectedExperienceId] = useState<string | null>(null)
+  const newExperienceDrawer = useQueryDrawer('new-experience')
+
+  useEffect(() => {
+    const handleCreated = (event: Event) => {
+      const experience = (event as CustomEvent<ExperienceDetails>).detail
+      setExperiences((currentExperiences) => [experience, ...currentExperiences])
+    }
+
+    window.addEventListener('kryptompeg:experience-created', handleCreated)
+    return () => window.removeEventListener('kryptompeg:experience-created', handleCreated)
+  }, [])
 
   const toggleFavorite = async (experience: Experience) => {
     try {
@@ -43,13 +57,19 @@ export function ExperienceLibrary({ initialExperiences }: ExperienceLibraryProps
 
   return (
     <section aria-labelledby="experience-library-title">
-      <div>
-        <h1 id="experience-library-title" className="text-3xl font-semibold text-text-primary">
-          Biblioteca
-        </h1>
-        <p className="mt-2 text-sm text-text-secondary">
-          Todas as experiências que fazem parte da sua jornada.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 id="experience-library-title" className="text-3xl font-semibold text-text-primary">
+            Biblioteca
+          </h1>
+          <p className="mt-2 text-sm text-text-secondary">
+            Todas as experiências que fazem parte da sua jornada.
+          </p>
+        </div>
+        <Button className="hidden shrink-0 gap-2 sm:inline-flex" onClick={newExperienceDrawer.open}>
+          <PlusIcon size={18} weight="bold" aria-hidden="true" />
+          Nova experiência
+        </Button>
       </div>
 
       {experiences.length === 0 ? (
