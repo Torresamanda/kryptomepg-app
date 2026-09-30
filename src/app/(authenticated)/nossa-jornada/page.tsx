@@ -11,6 +11,8 @@ import { getRandomMemory } from '@/features/memories/services/getRandomMemory'
 import { getRecentGoals } from '@/features/goals/services/getRecentGoals'
 import { TimelinePreviewCard } from '@/features/timeline/components/TimelinePreviewCard'
 import { getTimelineEvents } from '@/features/timeline/services/getTimelineEvents'
+import { RecentExperiencesSection } from '@/features/experiences/components/RecentExperiencesSection'
+import { getRecentExperiences } from '@/features/experiences/services/getRecentExperiences'
 
 function getCurrentMonth() {
   const date = new Date()
@@ -18,14 +20,16 @@ function getCurrentMonth() {
 }
 
 export default async function NossaJornadaPage() {
-  const [user, highlights, monthlyActivity, memory, goals, timeline] = await Promise.all([
-    getCurrentUser(),
-    getJourneyHighlights(),
-    getMonthlyActivity(getCurrentMonth()),
-    getRandomMemory(),
-    getRecentGoals(),
-    getTimelineEvents({ limit: 4 }),
-  ])
+  const [user, highlights, monthlyActivity, memory, goals, timeline, experiences] =
+    await Promise.all([
+      getCurrentUser(),
+      getJourneyHighlights(),
+      getMonthlyActivity(getCurrentMonth()),
+      getRandomMemory(),
+      getRecentGoals(),
+      getTimelineEvents({ limit: 4 }),
+      getRecentExperiences(),
+    ])
 
   if (!user) return null
 
@@ -45,6 +49,7 @@ export default async function NossaJornadaPage() {
         <GoalsSection initialGoals={goals} />
         <TimelinePreviewCard events={timeline.events} />
       </div>
+      <RecentExperiencesSection initialExperiences={experiences} />
     </PageContainer>
   )
 }

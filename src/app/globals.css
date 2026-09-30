@@ -120,3 +120,11 @@ body {
 .Toastify__progress-bar {
   background: var(--color-brand-gold-400);
 }
+
+.drag-scroll {
+  scrollbar-width: none;
+}
+
+.drag-scroll::-webkit-scrollbar {
+  display: none;
+}
