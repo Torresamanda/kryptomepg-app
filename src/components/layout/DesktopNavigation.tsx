@@ -52,7 +52,7 @@ export function DesktopNavigation({ user }: DesktopNavigationProps) {
   }, [updateIndicator])
 
   return (
-    <header className="hidden border-b border-border-default bg-background-primary md:block">
+    <header className="hidden border-b border-border-default bg-background-primary md:sticky md:top-0 md:z-50 md:block">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-6">
         <Link
           href="/"
