@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { Button } from '@/components/ui/Button'
 import type {
@@ -48,7 +48,7 @@ export function ExperienceEditForm({
     ? URL.createObjectURL(imageFile)
     : coverImageUrl || experience.coverImageUrl
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     const parsedProgress = Number(progress)
     const parsedRating = rating.trim() === '' ? null : Number(rating)
@@ -95,7 +95,7 @@ export function ExperienceEditForm({
   return (
     <form onSubmit={handleSubmit} className="grid gap-5" aria-label="Editar experiência">
       <div className="grid gap-4 sm:grid-cols-[7rem_1fr] sm:items-center">
-        <div className="relative mx-auto h-40 w-28 overflow-hidden rounded-md border border-border-default bg-surface-elevated sm:mx-0 sm:h-auto sm:w-auto sm:aspect-[3/4]">
+        <div className="relative mx-auto h-40 w-28 overflow-hidden rounded-md border border-border-default bg-surface-elevated sm:mx-0 sm:h-auto sm:w-auto sm:aspect-3/4">
           <ImageWithFallback
             src={previewUrl}
             alt="Prévia da capa da experiência"

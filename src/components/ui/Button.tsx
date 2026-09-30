@@ -1,10 +1,9 @@
-import type { ComponentPropsWithoutRef } from 'react'
-import { forwardRef } from 'react'
+import type { ComponentPropsWithRef } from 'react'
 
 type ButtonVariant = 'primary' | 'ghost' | 'outline'
 type ButtonSize = 'default' | 'icon'
 
-interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+interface ButtonProps extends ComponentPropsWithRef<'button'> {
   variant?: ButtonVariant
   size?: ButtonSize
 }
@@ -21,10 +20,14 @@ const sizeClasses: Record<ButtonSize, string> = {
   icon: 'size-10 rounded-sm',
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, size = 'default', type = 'button', variant = 'primary', ...props },
+export function Button({
+  className,
   ref,
-) {
+  size = 'default',
+  type = 'button',
+  variant = 'primary',
+  ...props
+}: ButtonProps) {
   const classes = [
     'cursor-pointer inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus disabled:cursor-not-allowed disabled:opacity-50',
     variantClasses[variant],
@@ -35,4 +38,4 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     .join(' ')
 
   return <button ref={ref} type={type} className={classes} {...props} />
-})
+}

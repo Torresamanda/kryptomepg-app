@@ -1,14 +1,11 @@
-import { forwardRef, useId, type ComponentPropsWithoutRef } from 'react'
+import { useId, type ComponentPropsWithRef } from 'react'
 
-interface InputProps extends ComponentPropsWithoutRef<'input'> {
+interface InputProps extends ComponentPropsWithRef<'input'> {
   label: string
   error?: string
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { className, error, id, label, ...props },
-  ref,
-) {
+export function Input({ className, error, id, label, ref, ...props }: InputProps) {
   const generatedId = useId()
   const inputId = id ?? generatedId
 
@@ -46,4 +43,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       ) : null}
     </div>
   )
-})
+}

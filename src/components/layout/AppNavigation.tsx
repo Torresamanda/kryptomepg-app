@@ -1,6 +1,6 @@
 'use client'
 
-import { NewExperienceDrawer } from '@/features/experiencias/components/NewExperienceDrawer'
+import { NewExperienceDrawer } from '@/features/experiences/components/NewExperienceDrawer'
 import type { CurrentUser } from '@/features/auth/types/CurrentUser'
 import { useQueryDrawer } from '@/hooks/useQueryDrawer/useQueryDrawer'
 import { DesktopNavigation } from './DesktopNavigation'
