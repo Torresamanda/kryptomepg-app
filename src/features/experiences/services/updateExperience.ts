@@ -46,6 +46,22 @@ export async function updateExperience(
   const currentExperience = experiencesMock[experienceIndex]
   if (!currentExperience) throw new Error('Experiência não encontrada.')
 
+  const isCompleting = currentExperience.status !== 'completed' && request.status === 'completed'
+  const hasValidRating =
+    request.review?.rating !== null &&
+    request.review?.rating !== undefined &&
+    Number.isFinite(request.review.rating) &&
+    request.review.rating >= 0 &&
+    request.review.rating <= 10
+  const hasUpdatedProgress =
+    request.progress !== undefined &&
+    request.progress !== null &&
+    request.progress.current !== currentExperience.progress?.current
+
+  if (isCompleting && (!hasValidRating || !hasUpdatedProgress)) {
+    throw new Error('Para finalizar, informe uma nota e atualize o progresso atual.')
+  }
+
   const updatedAt = new Date().toISOString()
   const activities: ExperienceActivity[] = []
   const nextReview =

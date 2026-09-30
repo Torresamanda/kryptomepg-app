@@ -34,7 +34,7 @@ export function ExperienceEditForm({
   onCancel,
   onSave,
 }: ExperienceEditFormProps) {
-  const [coverImageUrl, setCoverImageUrl] = useState(experience.coverImageUrl ?? '')
+  const [coverImageUrl, setCoverImageUrl] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [status, setStatus] = useState(experience.status)
   const [progress, setProgress] = useState(initialProgress(experience))
@@ -42,17 +42,36 @@ export function ExperienceEditForm({
   const [comment, setComment] = useState(experience.review?.comment ?? '')
   const [activityNote, setActivityNote] = useState('')
   const [isFavorite, setIsFavorite] = useState(experience.favorite.isFavoriteByCurrentUser)
+  const [completionError, setCompletionError] = useState<string | null>(null)
 
-  const previewUrl = imageFile ? URL.createObjectURL(imageFile) : coverImageUrl || null
+  const previewUrl = imageFile
+    ? URL.createObjectURL(imageFile)
+    : coverImageUrl || experience.coverImageUrl
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const parsedProgress = Number(progress)
     const parsedRating = rating.trim() === '' ? null : Number(rating)
+    const isCompleting = status === 'completed' && experience.status !== 'completed'
+    const hasValidRating =
+      parsedRating !== null &&
+      Number.isFinite(parsedRating) &&
+      parsedRating >= 0 &&
+      parsedRating <= 10
+    const hasUpdatedProgress =
+      experience.progress !== null &&
+      Number.isFinite(parsedProgress) &&
+      parsedProgress !== experience.progress.current
 
+    if (isCompleting && (!hasValidRating || !hasUpdatedProgress)) {
+      setCompletionError('Para finalizar, informe uma nota e atualize o progresso atual.')
+      return
+    }
+
+    setCompletionError(null)
     await onSave(
       {
-        coverImageUrl: imageFile ? undefined : coverImageUrl.trim() || null,
+        coverImageUrl: imageFile ? undefined : coverImageUrl.trim() || undefined,
         status,
         progress: experience.progress
           ? {
@@ -91,10 +110,21 @@ export function ExperienceEditForm({
               type="url"
               value={coverImageUrl}
               onChange={(event) => setCoverImageUrl(event.target.value)}
-              placeholder="https://exemplo.com/capa.jpg"
+              placeholder="https://..."
               className="min-h-11 rounded-md border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-border-focus/30"
             />
           </label>
+          <p className="text-xs text-text-muted">
+            Não tem o link?{' '}
+            <a
+              href="https://www.steamgriddb.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-brand-purple-300 underline underline-offset-2 transition-colors hover:text-brand-purple-100"
+            >
+              Clique aqui.
+            </a>
+          </p>
           <label className="grid gap-1.5 text-sm font-medium text-text-primary">
             Ou envie um arquivo
             <input
@@ -104,22 +134,18 @@ export function ExperienceEditForm({
               className="block w-full text-sm text-text-secondary file:mr-3 file:cursor-pointer file:rounded-sm file:border-0 file:bg-surface-hover file:px-3 file:py-2 file:text-sm file:font-medium file:text-text-primary hover:file:bg-border-default"
             />
           </label>
-          <div className="space-y-1 text-xs text-text-muted">
-            <p>Aceita link ou arquivos JPEG, PNG e WebP.</p>
-            <p>
-              Não tem o link?{' '}
-              <a
-                href="https://www.steamgriddb.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="text-brand-purple-300 underline underline-offset-2 transition-colors hover:text-brand-purple-100"
-              >
-                Clique aqui.
-              </a>
-            </p>
-          </div>
+          <p className="text-xs text-text-muted">Aceita arquivos JPEG, PNG e WebP.</p>
         </div>
       </div>
+
+      {completionError ? (
+        <p
+          className="rounded-sm border border-error/60 bg-error/10 px-3 py-2 text-sm text-error"
+          role="alert"
+        >
+          {completionError}
+        </p>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-1.5 text-sm font-medium text-text-primary">
@@ -138,24 +164,32 @@ export function ExperienceEditForm({
         </label>
         <label className="grid gap-1.5 text-sm font-medium text-text-primary">
           {experience.progress?.unit === 'pages' ? 'Página atual' : 'Horas jogadas'}
+          {status === 'completed' && experience.status !== 'completed' ? ' (obrigatório)' : ''}
           <input
             type="number"
             min="0"
             max={experience.progress?.total}
             value={progress}
-            onChange={(event) => setProgress(event.target.value)}
+            onChange={(event) => {
+              setProgress(event.target.value)
+              setCompletionError(null)
+            }}
             className="min-h-11 rounded-md border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-border-focus/30"
           />
         </label>
         <label className="grid gap-1.5 text-sm font-medium text-text-primary">
           Nota de 0 a 10
+          {status === 'completed' && experience.status !== 'completed' ? ' (obrigatória)' : ''}
           <input
             type="number"
             min="0"
             max="10"
             step="0.5"
             value={rating}
-            onChange={(event) => setRating(event.target.value)}
+            onChange={(event) => {
+              setRating(event.target.value)
+              setCompletionError(null)
+            }}
             className="min-h-11 rounded-md border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-border-focus/30"
           />
         </label>

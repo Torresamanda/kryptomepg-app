@@ -74,4 +74,10 @@ describe('experience services', () => {
     experiencesMock.splice(experienceIndex, 0, removedExperience)
     experienceActivitiesMock[experienceId] = removedActivities
   })
+
+  it('requires an updated progress and a rating when finalizing an experience', async () => {
+    await expect(
+      updateExperience('experience-shadow-playing', { status: 'completed' }),
+    ).rejects.toThrow('Para finalizar, informe uma nota e atualize o progresso atual.')
+  })
 })

@@ -23,11 +23,36 @@ interface ExperienceDetailsModalProps {
 }
 
 const statusPresentation = {
-  abandoned: { label: 'Abandonado', className: 'bg-error text-text-primary' },
-  completed: { label: 'Finalizado', className: 'bg-success text-text-primary' },
-  paused: { label: 'Pausado', className: 'bg-warning text-background-primary' },
-  playing: { label: 'Jogando', className: 'bg-brand-gold-700 text-brand-gold-100' },
-  reading: { label: 'Lendo', className: 'bg-info text-background-primary' },
+  abandoned: {
+    label: 'Abandonado',
+    className: 'bg-error text-text-primary',
+    progressClassName: 'bg-error',
+    progressTextClassName: 'text-error',
+  },
+  completed: {
+    label: 'Finalizado',
+    className: 'bg-success text-text-primary',
+    progressClassName: 'bg-success',
+    progressTextClassName: 'text-success',
+  },
+  paused: {
+    label: 'Pausado',
+    className: 'bg-warning text-background-primary',
+    progressClassName: 'bg-warning',
+    progressTextClassName: 'text-warning',
+  },
+  playing: {
+    label: 'Jogando',
+    className: 'bg-brand-gold-700 text-brand-gold-100',
+    progressClassName: 'bg-brand-gold-600',
+    progressTextClassName: 'text-brand-gold-400',
+  },
+  reading: {
+    label: 'Lendo',
+    className: 'bg-info text-background-primary',
+    progressClassName: 'bg-accent-blue-500',
+    progressTextClassName: 'text-accent-blue-400',
+  },
 }
 
 function formatDate(value: string) {
@@ -209,11 +234,11 @@ export function ExperienceDetailsModal({
                   <div className="flex items-center gap-3">
                     <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-surface-hover">
                       <div
-                        className="h-full rounded-full bg-brand-gold-500"
+                        className={`h-full rounded-full ${presentation.progressClassName}`}
                         style={{ width: `${progress.percent}%` }}
                       />
                     </div>
-                    <span className="text-xs font-semibold text-brand-gold-400">
+                    <span className={`text-xs font-semibold ${presentation.progressTextClassName}`}>
                       {progress.percent}%
                     </span>
                   </div>
