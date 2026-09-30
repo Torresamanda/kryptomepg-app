@@ -42,7 +42,7 @@ export function ExperienceDiary({ experience }: ExperienceDiaryProps) {
           const Icon = activityIcon[activity.type]
           return (
             <li key={activity.id} className="relative pb-5 last:pb-0">
-              <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-surface-elevated text-brand-gold-400">
+              <span className="absolute -left-7.75 top-0 flex size-5 items-center justify-center rounded-full bg-surface-elevated text-brand-gold-400">
                 <Icon size={13} aria-hidden="true" />
               </span>
               <time className="block text-xs text-text-muted" dateTime={activity.occurredAt}>

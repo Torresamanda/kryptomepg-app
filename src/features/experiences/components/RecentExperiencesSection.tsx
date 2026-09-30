@@ -1,49 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRightIcon } from '@/assets/icons'
-import { notify } from '@/components/feedback/toast/notify'
 import { useDragScroll } from '@/hooks/useDragScroll/useDragScroll'
-import { updateExperienceFavorite } from '../services/updateExperienceFavorite'
 import type { Experience } from '../types/Experience'
 import { ExperienceCard } from './ExperienceCard'
-import { ExperienceDetailsModal } from './ExperienceDetailsModal'
 
 interface RecentExperiencesSectionProps {
   initialExperiences: Experience[]
 }
 
 export function RecentExperiencesSection({ initialExperiences }: RecentExperiencesSectionProps) {
-  const [experiences, setExperiences] = useState(initialExperiences)
-  const [selectedExperienceId, setSelectedExperienceId] = useState<string | null>(null)
   const dragScroll = useDragScroll<HTMLDivElement>()
-
-  const toggleFavorite = async (experience: Experience) => {
-    try {
-      const updatedExperience = await notify.promise(
-        updateExperienceFavorite(experience.id, !experience.favorite.isFavoriteByCurrentUser),
-        experience.favorite.isFavoriteByCurrentUser
-          ? {
-              loading: 'Removendo favorito...',
-              success: 'Favorito removido.',
-              error: 'Não foi possível remover o favorito. Tente novamente.',
-            }
-          : {
-              loading: 'Adicionando favorito...',
-              success: 'Experiência favoritada.',
-              error: 'Não foi possível favoritar a experiência. Tente novamente.',
-            },
-      )
-      setExperiences((currentExperiences) =>
-        currentExperiences.map((currentExperience) =>
-          currentExperience.id === updatedExperience.id ? updatedExperience : currentExperience,
-        ),
-      )
-    } catch {
-      // The toast already communicates an asynchronous operation failure.
-    }
-  }
 
   return (
     <section
@@ -68,43 +36,22 @@ export function RecentExperiencesSection({ initialExperiences }: RecentExperienc
         </Link>
       </div>
 
-      {experiences.length === 0 ? (
+      {initialExperiences.length === 0 ? (
         <p className="mt-6 text-sm text-text-secondary">Nenhuma experiência recente ainda.</p>
       ) : (
         <div
           {...dragScroll}
           className="drag-scroll mt-6 -mr-5 flex snap-x cursor-grab touch-pan-y gap-4 overflow-x-auto pb-2 pr-5 select-none active:cursor-grabbing sm:-mr-7 sm:pr-7 lg:mr-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pr-0"
         >
-          {experiences.map((experience, index) => (
+          {initialExperiences.map((experience, index) => (
             <ExperienceCard
               key={experience.id}
               experience={experience}
-              onOpenDetails={(selectedExperience) => setSelectedExperienceId(selectedExperience.id)}
-              onToggleFavorite={toggleFavorite}
               prioritizeImage={index === 0}
             />
           ))}
         </div>
       )}
-
-      <ExperienceDetailsModal
-        experienceId={selectedExperienceId}
-        open={selectedExperienceId !== null}
-        onClose={() => setSelectedExperienceId(null)}
-        onExperienceDeleted={(experienceId) => {
-          setExperiences((currentExperiences) =>
-            currentExperiences.filter((currentExperience) => currentExperience.id !== experienceId),
-          )
-          setSelectedExperienceId(null)
-        }}
-        onExperienceUpdated={(updatedExperience) =>
-          setExperiences((currentExperiences) =>
-            currentExperiences.map((currentExperience) =>
-              currentExperience.id === updatedExperience.id ? updatedExperience : currentExperience,
-            ),
-          )
-        }
-      />
     </section>
   )
 }

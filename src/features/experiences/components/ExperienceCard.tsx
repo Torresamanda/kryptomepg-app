@@ -14,8 +14,8 @@ import type { Experience, ExperienceStatus } from '../types/Experience'
 
 interface ExperienceCardProps {
   experience: Experience
-  onOpenDetails: (experience: Experience) => void
-  onToggleFavorite: (experience: Experience) => void
+  onOpenDetails?: (experience: Experience) => void
+  onToggleFavorite?: (experience: Experience) => void
   prioritizeImage?: boolean
 }
 
@@ -91,6 +91,8 @@ export function ExperienceCard({
   onToggleFavorite,
   prioritizeImage = false,
 }: ExperienceCardProps) {
+  const canOpenDetails = Boolean(onOpenDetails)
+  const canToggleFavorite = Boolean(onToggleFavorite)
   const presentation = statusPresentation[experience.status]
   const progress = getProgressDetails(experience)
   const rating = experience.review?.rating
@@ -99,15 +101,19 @@ export function ExperienceCard({
 
   return (
     <article
-      className="flex w-64 shrink-0 cursor-pointer flex-col overflow-hidden rounded-lg border border-border-default bg-surface-default transition-colors hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus sm:w-68 lg:w-auto"
-      tabIndex={0}
-      role="button"
-      aria-label={`Abrir detalhes de ${experience.title}`}
-      onClick={() => onOpenDetails(experience)}
+      className={`flex w-64 shrink-0 flex-col overflow-hidden rounded-lg border border-border-default bg-surface-default sm:w-68 lg:w-auto ${
+        canOpenDetails
+          ? 'cursor-pointer transition-colors hover:bg-surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus'
+          : ''
+      }`}
+      tabIndex={canOpenDetails ? 0 : undefined}
+      role={canOpenDetails ? 'button' : undefined}
+      aria-label={canOpenDetails ? `Abrir detalhes de ${experience.title}` : undefined}
+      onClick={canOpenDetails ? () => onOpenDetails?.(experience) : undefined}
       onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (canOpenDetails && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault()
-          onOpenDetails(experience)
+          onOpenDetails?.(experience)
         }
       }}
     >
@@ -127,23 +133,38 @@ export function ExperienceCard({
           <ExperienceTypeIcon type={experience.type} />
         </span>
         <div className="absolute right-3 top-3 flex flex-col gap-2">
-          <button
-            type="button"
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={(event) => {
-              event.stopPropagation()
-              onToggleFavorite(experience)
-            }}
-            aria-label={`${experience.favorite.isFavoriteByCurrentUser ? 'Remover' : 'Adicionar'} ${experience.title} dos favoritos`}
-            aria-pressed={experience.favorite.isFavoriteByCurrentUser}
-            className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-background-primary/80 text-brand-purple-400 transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
-          >
-            <HeartIcon
-              size={18}
-              weight={experience.favorite.isFavoriteByCurrentUser ? 'fill' : 'regular'}
-              aria-hidden="true"
-            />
-          </button>
+          {canToggleFavorite ? (
+            <button
+              type="button"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation()
+                onToggleFavorite?.(experience)
+              }}
+              aria-label={`${experience.favorite.isFavoriteByCurrentUser ? 'Remover' : 'Adicionar'} ${experience.title} dos favoritos`}
+              aria-pressed={experience.favorite.isFavoriteByCurrentUser}
+              className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-background-primary/80 text-brand-purple-400 transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+            >
+              <HeartIcon
+                size={18}
+                weight={experience.favorite.isFavoriteByCurrentUser ? 'fill' : 'regular'}
+                aria-hidden="true"
+              />
+            </button>
+          ) : (
+            <span
+              aria-label={
+                experience.favorite.isFavoriteByCurrentUser ? 'Favorito' : 'Não favoritado'
+              }
+              className="flex size-8 items-center justify-center rounded-full bg-background-primary/80 text-brand-purple-400"
+            >
+              <HeartIcon
+                size={18}
+                weight={experience.favorite.isFavoriteByCurrentUser ? 'fill' : 'regular'}
+                aria-hidden="true"
+              />
+            </span>
+          )}
           {experience.type === 'game' && experience.platinumAt && (
             <span
               aria-label="Jogo platinado"
